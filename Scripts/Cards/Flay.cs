@@ -53,11 +53,9 @@ public class Flay : SilentCardModel, ILocalizationProvider
 
         if (IsUpgraded)
         {
-            var enemies = CombatState?.HittableEnemies.ToList();
-            if (enemies != null && enemies.Count > 0)
+            var randomEnemy = Owner.RunState.Rng.CombatTargets.NextItem(CombatState.HittableEnemies);
+            if (randomEnemy != null)
             {
-                var random = new System.Random();
-                var randomEnemy = enemies[random.Next(enemies.Count)];
                 await PowerCmd.Apply<PoisonPower>(choiceContext, randomEnemy, DynamicVars["PoisonAmount"].IntValue, Owner.Creature, this);
             }
         }
