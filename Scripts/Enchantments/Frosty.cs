@@ -43,7 +43,17 @@ public class Frosty : CustomEnchantmentModel
         int blockToGain = result.TotalDamage / 2;
         if (blockToGain > 0)
         {
-            await CreatureCmd.GainBlock(Card.Owner.Creature, blockToGain, ValueProp.Move, null);
+            var cardPlay = new CardPlay
+            {
+                Card = Card,
+                Target = target,
+                ResultPile = PileType.Discard,
+                Resources = new ResourceInfo { EnergySpent = 0, EnergyValue = 0, StarsSpent = 0, StarValue = 0 },
+                IsAutoPlay = true,
+                PlayIndex = 0,
+                PlayCount = 1
+            };
+            await CreatureCmd.GainBlock(Card.Owner.Creature, blockToGain, ValueProp.Move, cardPlay);
         }
     }
 }
