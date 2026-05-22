@@ -169,10 +169,8 @@ public static class ExtinctHistoryCoursePatch
             return true;
         }
 
-        int targetRound = combatState.RoundNumber - 1;
-
         var allPlays = CombatManager.Instance.History.CardPlaysFinished
-            .Where(e => e.CardPlay.Card.Owner == __instance.Owner && e.RoundNumber == targetRound)
+            .Where(e => e.CardPlay.Card.Owner == __instance.Owner && e.HappenedLastPlayerTurn(__instance.Owner))
             .ToList();
 
         CardModel? cardModel = allPlays

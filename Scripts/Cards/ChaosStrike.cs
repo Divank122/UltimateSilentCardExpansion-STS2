@@ -14,9 +14,11 @@ using MegaCrit.Sts2.Core.Helpers;
 using MegaCrit.Sts2.Core.Localization;
 using MegaCrit.Sts2.Core.Localization.DynamicVars;
 using MegaCrit.Sts2.Core.Models.CardPools;
+using MegaCrit.Sts2.Core.Models;
 using MegaCrit.Sts2.Core.Nodes.Rooms;
 using MegaCrit.Sts2.Core.Nodes.Vfx;
 using MegaCrit.Sts2.Core.ValueProps;
+using USCE.Scripts.Powers;
 
 namespace USCE.Scripts.Cards;
 
@@ -77,5 +79,13 @@ public class ChaosStrike : SilentCardModel
     protected override void OnUpgrade()
     {
         DynamicVars.Damage.UpgradeValueBy(2m);
+    }
+
+    public override async Task AfterCardEnteredCombat(CardModel card)
+    {
+        if (card == this && !IsClone)
+        {
+            await PowerCmd.Apply<DriftingPower>(new ThrowingPlayerChoiceContext(), Owner.Creature, 1, Owner.Creature, this);
+        }
     }
 }
