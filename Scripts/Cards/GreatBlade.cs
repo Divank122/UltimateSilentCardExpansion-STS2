@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using BaseLib.Abstracts;
+using USCE.Scripts.Powers;
 using BaseLib.Utils;
 using MegaCrit.Sts2.Core.Combat;
 using MegaCrit.Sts2.Core.Commands;
@@ -26,7 +27,19 @@ namespace USCE.Scripts.Cards;
 [Pool(typeof(TokenCardPool))]
 public sealed class GreatBlade : SilentCardModel
 {
-    public override TargetType TargetType => TargetType.AnyEnemy;
+    public override TargetType TargetType => HasFanOfKnives ? TargetType.AllEnemies : TargetType.AnyEnemy;
+
+    private bool HasFanOfKnives
+    {
+        get
+        {
+            if (IsMutable && Owner != null)
+            {
+                return Owner.Creature.HasPower<FanOfKnivesPower>();
+            }
+            return false;
+        }
+    }
 
     protected override HashSet<CardTag> CanonicalTags => new HashSet<CardTag> { CardTag.Shiv };
 
@@ -56,20 +69,39 @@ public sealed class GreatBlade : SilentCardModel
 
     protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
     {
-        ArgumentNullException.ThrowIfNull(cardPlay.Target, "cardPlay.Target");
-
-        var attackCommand = DamageCmd.Attack(DynamicVars.Damage.BaseValue)
-            .FromCard(this)
-            .Targeting(cardPlay.Target)
-            .WithHitVfxNode((Creature t) => NBigSlashVfx.Create(t))
-            .WithHitVfxNode((Creature t) => NBigSlashImpactVfx.Create(t));
-
+        var attackCommand = DamageCmd.Attack(DynamicVars.Damage.BaseValue).FromCard(this);
+        if (HasFanOfKnives)
+        {
+            Creature lastEnemy = CombatState.HittableEnemies.LastOrDefault();
+            attackCommand = attackCommand.TargetingAllOpponents(CombatState).WithHitVfxNode((Creature t) => NBigSlashVfx.Create(t)).WithHitVfxNode((Creature t) => NBigSlashImpactVfx.Create(t));
+        }
+        else
+        {
+            ArgumentNullException.ThrowIfNull(cardPlay.Target, "cardPlay.Target");
+            attackCommand = attackCommand.Targeting(cardPlay.Target).WithHitVfxNode((Creature t) => NBigSlashVfx.Create(t)).WithHitVfxNode((Creature t) => NBigSlashImpactVfx.Create(t));
+        }
         await attackCommand.Execute(choiceContext);
     }
 
     protected override void OnUpgrade()
     {
         DynamicVars.Damage.UpgradeValueBy(4m);
+    }
+
+    public override async Task BeforeCombatStart()
+    {
+        if (Owner.Creature.GetPower<GreatBladeModifierPower>() == null)
+        {
+            await PowerCmd.Apply<GreatBladeModifierPower>(Owner.Creature, 1m, null, null);
+        }
+    }
+
+    public override async Task AfterCardEnteredCombat(CardModel card)
+    {
+        if (card == this && Owner.Creature.GetPower<GreatBladeModifierPower>() == null)
+        {
+            await PowerCmd.Apply<GreatBladeModifierPower>(Owner.Creature, 1m, null, null);
+        }
     }
 
     public static async Task<CardModel?> CreateInHand(Player owner, CombatState combatState)

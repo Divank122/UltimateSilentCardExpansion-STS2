@@ -9,6 +9,7 @@ using MegaCrit.Sts2.Core.Entities.Cards;
 using MegaCrit.Sts2.Core.Entities.Creatures;
 using MegaCrit.Sts2.Core.Entities.Players;
 using MegaCrit.Sts2.Core.Entities.Powers;
+using MegaCrit.Sts2.Core.GameActions.Multiplayer;
 using MegaCrit.Sts2.Core.Hooks;
 using MegaCrit.Sts2.Core.Models;
 using MegaCrit.Sts2.Core.Models.Cards;
@@ -182,47 +183,19 @@ public static class CardCmdUpgradePatch
 [HarmonyPatch(typeof(CombatManager), "SetUpCombat")]
 public static class ShivCombatPatch
 {
-    public static void Postfix(CombatState state)
-    {
-        var instance = CombatManager.Instance;
-        if (instance != null)
-        {
-            instance.CombatSetUp += OnCombatSetUp;
-            instance.CombatEnded += OnCombatEnded;
-        }
-    }
-
-    private static async void OnCombatSetUp(CombatState state)
-    {
-        GD.Print("[ShivCombatPatch] OnCombatSetUp called");
-        if (state.Players.Count > 0 && state.Players[0]?.Creature != null)
-        {
-            var playerCreature = state.Players[0].Creature;
-            GD.Print($"[ShivCombatPatch] Player creature: {playerCreature.GetType().Name}");
-            var existingPower = playerCreature.GetPower<GreatBladeModifierPower>();
-            GD.Print($"[ShivCombatPatch] Existing GreatBladeModifierPower: {existingPower?.GetType().Name}");
-            if (existingPower == null)
-            {
-                GD.Print("[ShivCombatPatch] Applying GreatBladeModifierPower...");
-                await PowerCmd.Apply<GreatBladeModifierPower>(playerCreature, 1m, null, null);
-                GD.Print("[ShivCombatPatch] GreatBladeModifierPower applied");
-            }
-        }
-        else
-        {
-            GD.Print("[ShivCombatPatch] No players in combat state!");
-        }
-    }
-
-    private static void OnCombatEnded(CombatRoom room)
+    public static async void Postfix(CombatState state)
     {
         ShivCreateInHandPatches.ClearAll();
 
-        var instance = CombatManager.Instance;
-        if (instance != null)
+        if (state.Players.Count > 0 && state.Players[0]?.Creature != null)
         {
-            instance.CombatSetUp -= OnCombatSetUp;
-            instance.CombatEnded -= OnCombatEnded;
+            var playerCreature = state.Players[0].Creature;
+            var existingPower = playerCreature.GetPower<GreatBladeModifierPower>();
+            if (existingPower == null)
+            {
+                await PowerCmd.Apply<GreatBladeModifierPower>(playerCreature, 1m, null, null);
+            }
         }
     }
 }
+
