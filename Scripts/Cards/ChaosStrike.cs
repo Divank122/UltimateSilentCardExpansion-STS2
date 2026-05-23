@@ -81,9 +81,17 @@ public class ChaosStrike : SilentCardModel
         DynamicVars.Damage.UpgradeValueBy(2m);
     }
 
+    public override async Task BeforeCombatStart()
+    {
+        if (Owner.Creature.GetPower<DriftingPower>() == null)
+        {
+            await PowerCmd.Apply<DriftingPower>(new ThrowingPlayerChoiceContext(), Owner.Creature, 1, Owner.Creature, this);
+        }
+    }
+
     public override async Task AfterCardEnteredCombat(CardModel card)
     {
-        if (card == this && !IsClone)
+        if (card == this && Owner.Creature.GetPower<DriftingPower>() == null)
         {
             await PowerCmd.Apply<DriftingPower>(new ThrowingPlayerChoiceContext(), Owner.Creature, 1, Owner.Creature, this);
         }
