@@ -5,7 +5,6 @@ using MegaCrit.Sts2.Core.Entities.Cards;
 using MegaCrit.Sts2.Core.Entities.Powers;
 using MegaCrit.Sts2.Core.GameActions.Multiplayer;
 using MegaCrit.Sts2.Core.Models;
-using USCE.Scripts.Cards;
 
 namespace USCE.Scripts.Powers;
 
@@ -30,7 +29,9 @@ public class DriftingPower : PowerModel
             return;
         }
 
-        var driftingCards = hand.Cards.OfType<ChaosStrike>().ToList();
+        var driftingCards = hand.Cards
+            .Where(c => c.Keywords.Contains(USCEKeywords.Drifting))
+            .ToList();
         if (driftingCards.Count == 0)
         {
             return;
