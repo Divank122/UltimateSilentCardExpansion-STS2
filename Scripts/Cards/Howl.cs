@@ -17,7 +17,7 @@ using MegaCrit.Sts2.Core.ValueProps;
 namespace USCE.Scripts.Cards;
 
 [Pool(typeof(SilentCardPool))]
-public class Howl : SilentCardModel, ILocalizationProvider
+public class Howl : SilentCardModel, ILocalizationProvider, IKineticCard
 {
     private const int energyCost = 1;
     private const CardType type = CardType.Attack;
@@ -26,28 +26,40 @@ public class Howl : SilentCardModel, ILocalizationProvider
 
     protected override IEnumerable<DynamicVar> CanonicalVars =>
     [
-        new DamageVar(6m, ValueProp.Move),
+        new DamageVar(2m, ValueProp.Move),
+        new RepeatVar(2),
         new CardsVar(1)
     ];
 
     public override List<(string, string)>? Localization => LocManager.Instance.Language switch
     {
-        "zhs" => new CardLoc("呼啸", "对所有敌人造成{Damage:diff()}点伤害，抽{Cards:diff()}张牌。\n这张牌在本场战斗中额外抽1张牌。"),
-        _ => new CardLoc("Howl", "Deal {Damage:diff()} damage to ALL enemies. Draw {Cards:diff()} cards.\nEach time this card is played this combat, draw 1 additional card.")
+        "zhs" => new CardLoc("呼啸", "对所有敌人造成{Damage:diff()}点伤害{Repeat:diff()}次。抽{Cards:diff()}张牌。"),
+        _ => new CardLoc("Howl", "Deal {Damage:diff()} damage to ALL enemies {Repeat:diff()} times. Draw {Cards:diff()} cards.")
     };
+
+    public override IEnumerable<CardKeyword> CanonicalKeywords => [USCEKeywords.Kinetic];
 
     public Howl() : base(energyCost, type, rarity, targetType)
     {
     }
 
+    public IEnumerable<DynamicVar> GetKineticVars() =>
+    [
+        DynamicVars.Damage,
+        DynamicVars.Repeat,
+        DynamicVars.Cards
+    ];
+
     protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
     {
         var damage = DynamicVars.Damage.IntValue;
+        var hits = DynamicVars.Repeat.IntValue;
 
         SfxCmd.Play("event:/sfx/characters/silent/silent_dagger_spray");
         await DamageCmd.Attack(damage)
             .FromCard(this)
             .TargetingAllOpponents(CombatState)
+            .WithHitCount(hits)
             .WithAttackerFx(() => NDaggerSprayFlurryVfx.Create(Owner.Creature, new Godot.Color("#b1ccca"), goingRight: true))
             .BeforeDamage(async () =>
             {
@@ -55,21 +67,17 @@ public class Howl : SilentCardModel, ILocalizationProvider
                 foreach (var enemy in enemies)
                 {
                     var impact = NDaggerSprayImpactVfx.Create(enemy, new Godot.Color("#b1ccca"), goingRight: true);
-                    MegaCrit.Sts2.Core.Nodes.Rooms.NCombatRoom.Instance?.CombatVfxContainer.AddChildSafely(impact);
+                    NCombatRoom.Instance?.CombatVfxContainer.AddChildSafely(impact);
                 }
                 await Task.CompletedTask;
             })
             .Execute(choiceContext);
 
-        // 抽牌
         await CardPileCmd.Draw(choiceContext, DynamicVars.Cards.IntValue, Owner);
-
-        // 每次打出后，抽牌数+1（本场战斗生效）
-        DynamicVars.Cards.BaseValue += 1;
     }
 
     protected override void OnUpgrade()
     {
-        DynamicVars.Damage.UpgradeValueBy(3m);
+        DynamicVars.Repeat.UpgradeValueBy(1m);
     }
 }
