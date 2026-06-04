@@ -1,6 +1,9 @@
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using BaseLib.Abstracts;
+using MegaCrit.Sts2.Core.Combat;
+using MegaCrit.Sts2.Core.Combat.History.Entries;
 using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Entities.Cards;
 using MegaCrit.Sts2.Core.Entities.Creatures;
@@ -43,16 +46,9 @@ public class Frosty : CustomEnchantmentModel
         int blockToGain = result.TotalDamage / 2;
         if (blockToGain > 0)
         {
-            var cardPlay = new CardPlay
-            {
-                Card = Card,
-                Target = target,
-                ResultPile = PileType.Discard,
-                Resources = new ResourceInfo { EnergySpent = 0, EnergyValue = 0, StarsSpent = 0, StarValue = 0 },
-                IsAutoPlay = true,
-                PlayIndex = 0,
-                PlayCount = 1
-            };
+            CardPlay? cardPlay = CombatManager.Instance.History.CardPlaysStarted
+                .LastOrDefault(e => e.CardPlay.Card == cardSource)?.CardPlay;
+            
             await CreatureCmd.GainBlock(Card.Owner.Creature, blockToGain, ValueProp.Move, cardPlay);
         }
     }
