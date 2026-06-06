@@ -24,7 +24,7 @@ public class CorrosiveBurst : SilentCardModel, ILocalizationProvider
 
     protected override IEnumerable<DynamicVar> CanonicalVars =>
     [
-        new PowerVar<CorrosiveBurstPower>(26m)
+        new PowerVar<CorrosiveBurstPower>(18m)
     ];
 
     protected override IEnumerable<IHoverTip> ExtraHoverTips =>
@@ -50,6 +50,6 @@ public class CorrosiveBurst : SilentCardModel, ILocalizationProvider
 
     protected override void OnUpgrade()
     {
-        DynamicVars["CorrosiveBurstPower"].UpgradeValueBy(6m);
+        DynamicVars["CorrosiveBurstPower"].UpgradeValueBy(5m);
     }
 }

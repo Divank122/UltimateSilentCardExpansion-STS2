@@ -27,10 +27,7 @@ public class Rupture : SilentCardModel, ILocalizationProvider
         new DamageVar(14m, ValueProp.Move)
     ];
 
-    protected override IEnumerable<IHoverTip> ExtraHoverTips =>
-    [
-        HoverTipFactory.FromPower<FreePoisonPower>()
-    ];
+
 
     public override List<(string, string)>? Localization => LocManager.Instance.Language switch
     {
