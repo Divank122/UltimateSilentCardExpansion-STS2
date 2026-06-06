@@ -37,7 +37,7 @@ public class DissolveForge : SilentCardModel, ILocalizationProvider
         {
             List<IHoverTip> list = new List<IHoverTip>();
             list.Add(HoverTipFactory.FromPower<PoisonPower>());
-            list.Add(HoverTipFactory.FromCard<Shiv>());
+            list.Add(HoverTipFactory.FromCard<Shiv>(IsUpgraded));
             list.AddRange(HoverTipFactory.FromEnchantment<Bone>());
             return list;
         }
@@ -45,8 +45,8 @@ public class DissolveForge : SilentCardModel, ILocalizationProvider
 
     public override List<(string, string)>? Localization => LocManager.Instance.Language switch
     {
-        "zhs" => new CardLoc("溶制", "给予所有敌人{PoisonPower:diff()}层[gold]中毒[/gold]。\n战斗结束时将一张[purple]骨制[/purple][gold]小刀[/gold]加入你的牌组。"),
-        _ => new CardLoc("Dissolve Forge", "Apply {PoisonPower:diff()} [gold]Poison[/gold] to ALL enemies.\nAt the end of combat, add a [purple]Bone[/purple] [gold]Shiv[/gold] to your deck.")
+        "zhs" => new CardLoc("溶制", "给予所有敌人{PoisonPower:diff()}层[gold]中毒[/gold]。\n战斗结束时将一张[purple]骨制[/purple][gold]{IfUpgraded:show:小刀+|小刀}[/gold]加入你的牌组。"),
+        _ => new CardLoc("Dissolve Forge", "Apply {PoisonPower:diff()} [gold]Poison[/gold] to ALL enemies.\nAt the end of combat, add a [purple]Bone[/purple] [gold]{IfUpgraded:show:Shiv+|Shiv}[/gold] to your deck.")
     };
 
     public DissolveForge() : base(energyCost, type, rarity, targetType)
@@ -62,7 +62,14 @@ public class DissolveForge : SilentCardModel, ILocalizationProvider
             await PowerCmd.Apply<PoisonPower>(choiceContext, enemy, DynamicVars["PoisonPower"].IntValue, Owner.Creature, this);
         }
         
-        await PowerCmd.Apply<DissolveForgePower>(choiceContext, Owner.Creature, 1, Owner.Creature, this);
+        if (IsUpgraded)
+        {
+            await PowerCmd.Apply<DissolveForgePowerPlus>(choiceContext, Owner.Creature, 1, Owner.Creature, this);
+        }
+        else
+        {
+            await PowerCmd.Apply<DissolveForgePower>(choiceContext, Owner.Creature, 1, Owner.Creature, this);
+        }
     }
 
     protected override void OnUpgrade()

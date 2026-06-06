@@ -3,6 +3,6 @@
   "USCE-FROSTY.extraCardText": "获得相当于所造成伤害半数的[gold]格挡[/gold]。",
   "USCE-FROSTY.title": "寒霜",
   "USCE-BONE.description": "这张牌的伤害值降低[blue]1[/blue]点。打出这张牌时，抽[blue]1[/blue]张牌。",
-  "USCE-BONE.extraCardText": "这张牌的伤害值降低[blue]1[/blue]点。打出这张牌时，抽[blue]1[/blue]张牌。",
+  "USCE-BONE.extraCardText": "抽[blue]1[/blue]张牌。",
   "USCE-BONE.title": "骨制"
 }
