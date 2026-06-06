@@ -38,7 +38,7 @@ public class Balance : SilentCardModel
 
     public override List<(string, string)>? Localization => LocManager.Instance.Language switch
     {
-        "zhs" => new CardLoc("制衡", "下个回合，抽{Cards:diff()}张牌并获得{IfUpgraded:show:{energyPrefix:energyIcons(2)}|{energyPrefix:energyIcons(1)}}。\n你在本回合内只能再打出一张牌。"),
+        "zhs" => new CardLoc("制衡", "下个回合抽{Cards:diff()}张牌并获得{IfUpgraded:show:{energyPrefix:energyIcons(2)}|{energyPrefix:energyIcons(1)}}。\n你在本回合内只能再打出一张牌。"),
         _ => new CardLoc("Balance", "Next turn, draw {Cards:diff()} cards and gain {IfUpgraded:show:{energyPrefix:energyIcons(2)}|{energyPrefix:energyIcons(1)}}.\nYou can only play 1 more card this turn.")
     };
 
