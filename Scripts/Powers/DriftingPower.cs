@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using MegaCrit.Sts2.Core.Commands;
@@ -16,6 +17,33 @@ public class DriftingPower : PowerModel
 
     protected override bool IsVisibleInternal => false;
 
+    private HashSet<ModelId> DriftingCardsBeforePlay
+    {
+        get => GetInternalData<TurnData>().DriftingCardIds;
+        set => GetInternalData<TurnData>().DriftingCardIds = value;
+    }
+
+    protected override object? InitInternalData() => new TurnData();
+
+    public override async Task BeforeCardPlayed(CardPlay cardPlay)
+    {
+        if (cardPlay.Card.Owner.Creature != Owner)
+        {
+            return;
+        }
+
+        var hand = PileType.Hand.GetPile(Owner.Player);
+        if (hand == null)
+        {
+            return;
+        }
+
+        DriftingCardsBeforePlay = hand.Cards
+            .Where(c => c.Keywords.Contains(USCEKeywords.Drifting))
+            .Select(c => c.Id)
+            .ToHashSet();
+    }
+
     public override async Task AfterCardPlayed(PlayerChoiceContext choiceContext, CardPlay cardPlay)
     {
         if (cardPlay.Card.Owner.Creature != Owner)
@@ -30,7 +58,7 @@ public class DriftingPower : PowerModel
         }
 
         var driftingCards = hand.Cards
-            .Where(c => c.Keywords.Contains(USCEKeywords.Drifting))
+            .Where(c => DriftingCardsBeforePlay.Contains(c.Id))
             .ToList();
         if (driftingCards.Count == 0)
         {
@@ -43,5 +71,10 @@ public class DriftingPower : PowerModel
             await CardCmd.Discard(choiceContext, card);
             await CardPileCmd.Draw(choiceContext, 1, Owner.Player);
         }
+    }
+
+    private class TurnData
+    {
+        public HashSet<ModelId> DriftingCardIds = new();
     }
 }

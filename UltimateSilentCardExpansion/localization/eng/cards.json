@@ -1,5 +1,6 @@
 {
   "USCE-HANDY.selectionScreenPrompt": "Choose {Amount} cards from your draw pile, put them into your hand and discard.",
   "USCE-SYNTHESIZE.selectionScreenPrompt": "Choose an Attack to transform.",
-  "USCE-PROSPECTOR.selectionScreenPrompt": "Choose any number of cards to discard."
+  "USCE-PROSPECTOR.selectionScreenPrompt": "Choose any number of cards to discard.",
+  "USCE-INVERTED.selectionScreenPrompt": "Choose a card to add [gold]Drifting[/gold]."
 }
