@@ -19,4 +19,7 @@ public class USCEKeywords
 
     [CustomEnum("Drifting")] [KeywordProperties(AutoKeywordPosition.Before)]
     public static CardKeyword Drifting;
+
+    [CustomEnum("Kinetic")] [KeywordProperties(AutoKeywordPosition.After)]
+    public static CardKeyword Kinetic;
 }

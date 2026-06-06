@@ -8,5 +8,7 @@
   "USCE-EXTINCT.title": "灭绝",
   "USCE-EXTINCT.description": "打出这张牌后，将其从你的[gold]牌组[/gold]中移除。这张牌无法被复制。",
   "USCE-DRIFTING.title": "游离",
-  "USCE-DRIFTING.description": "当你打出其他牌时，将这张牌从[gold]手牌[/gold]中丢弃，然后抽[blue]1[/blue]张牌。"
+  "USCE-DRIFTING.description": "当你打出其他牌时，将这张牌从[gold]手牌[/gold]中丢弃，然后抽[blue]1[/blue]张牌。",
+  "USCE-KINETIC.title": "动能",
+  "USCE-KINETIC.description": "在本场战斗中，每当你打出这张牌，其每项效果的数值分别增加[blue]1[/blue]点。"
 }

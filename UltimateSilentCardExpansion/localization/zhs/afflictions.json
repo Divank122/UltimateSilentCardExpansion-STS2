@@ -1,0 +1,5 @@
+{
+  "BALANCE_AFFLICTION.description": "你在本回合只能再打出[blue]1[/blue]张牌。",
+  "BALANCE_AFFLICTION.extraCardText": "制衡。",
+  "BALANCE_AFFLICTION.title": "制衡"
+}
