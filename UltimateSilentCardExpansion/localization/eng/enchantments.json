@@ -1,5 +1,8 @@
 {
   "USCE-FROSTY.description": "When played, gain [gold]Block[/gold] equal to half the damage dealt.",
   "USCE-FROSTY.extraCardText": "Gain [gold]Block[/gold] equal to half the damage dealt.",
-  "USCE-FROSTY.title": "Frosty"
+  "USCE-FROSTY.title": "Frosty",
+  "USCE-BONE.description": "This card's damage is reduced by [blue]1[/blue]. Draw [blue]1[/blue] card when played.",
+  "USCE-BONE.extraCardText": "This card's damage is reduced by [blue]1[/blue]. Draw [blue]1[/blue] card when played.",
+  "USCE-BONE.title": "Bone"
 }
