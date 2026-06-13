@@ -23,7 +23,7 @@ public class Rupture : SilentCardModel
 
     protected override IEnumerable<DynamicVar> CanonicalVars =>
     [
-        new DamageVar(14m, ValueProp.Move)
+        new DamageVar(16m, ValueProp.Move)
     ];
 
     public override List<(string, string)>? Localization => LocManager.Instance.Language switch
@@ -48,6 +48,6 @@ public class Rupture : SilentCardModel
 
     protected override void OnUpgrade()
     {
-        DynamicVars.Damage.UpgradeValueBy(4m);
+        DynamicVars.Damage.UpgradeValueBy(6m);
     }
 }
