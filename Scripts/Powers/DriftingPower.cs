@@ -17,10 +17,10 @@ public class DriftingPower : PowerModel
 
     protected override bool IsVisibleInternal => false;
 
-    private HashSet<ModelId> DriftingCardsBeforePlay
+    private HashSet<CardModel> DriftingCardsBeforePlay
     {
-        get => GetInternalData<TurnData>().DriftingCardIds;
-        set => GetInternalData<TurnData>().DriftingCardIds = value;
+        get => GetInternalData<TurnData>().DriftingCards;
+        set => GetInternalData<TurnData>().DriftingCards = value;
     }
 
     protected override object? InitInternalData() => new TurnData();
@@ -40,7 +40,6 @@ public class DriftingPower : PowerModel
 
         DriftingCardsBeforePlay = hand.Cards
             .Where(c => c.Keywords.Contains(USCEKeywords.Drifting))
-            .Select(c => c.Id)
             .ToHashSet();
     }
 
@@ -58,7 +57,7 @@ public class DriftingPower : PowerModel
         }
 
         var driftingCards = hand.Cards
-            .Where(c => DriftingCardsBeforePlay.Contains(c.Id))
+            .Where(c => DriftingCardsBeforePlay.Contains(c))
             .ToList();
         if (driftingCards.Count == 0)
         {
@@ -75,6 +74,6 @@ public class DriftingPower : PowerModel
 
     private class TurnData
     {
-        public HashSet<ModelId> DriftingCardIds = new();
+        public HashSet<CardModel> DriftingCards = new();
     }
 }
