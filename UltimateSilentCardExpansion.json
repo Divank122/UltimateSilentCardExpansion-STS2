@@ -3,7 +3,7 @@
     "name": "史上最好的猎手卡牌扩展 | Ultimate Silent Card Expansion",
     "author": "原始小金人",
     "description": "为静默猎手添加39张新卡牌 | Adds 39 new cards for The Silent",
-    "version": "0.3.0",
+    "version": "0.3.1",
     "has_pck": true,
     "has_dll": true,
     "dependencies": [
