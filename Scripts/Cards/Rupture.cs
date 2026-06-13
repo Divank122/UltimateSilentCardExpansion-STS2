@@ -24,7 +24,7 @@ public class Rupture : SilentCardModel, ILocalizationProvider
 
     protected override IEnumerable<DynamicVar> CanonicalVars =>
     [
-        new DamageVar(14m, ValueProp.Move)
+        new DamageVar(16m, ValueProp.Move)
     ];
 
 
@@ -51,6 +51,6 @@ public class Rupture : SilentCardModel, ILocalizationProvider
 
     protected override void OnUpgrade()
     {
-        DynamicVars.Damage.UpgradeValueBy(4m);
+        DynamicVars.Damage.UpgradeValueBy(6m);
     }
 }
