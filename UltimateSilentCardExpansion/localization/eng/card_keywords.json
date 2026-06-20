@@ -6,7 +6,9 @@
   "USCE-GREATBLADE.title": "Great Blade",
   "USCE-GREATBLADE.description": "This card is also considered a [gold]Shiv[/gold].",
   "USCE-EXTINCT.title": "Extinct",
-  "USCE-EXTINCT.description": "After playing this card, remove it from your [gold]deck[/gold]. This card cannot be copied.",
+  "USCE-EXTINCT.description": "After playing this card, remove it from your [gold]Deck[/gold]. This card cannot be copied.",
   "USCE-DRIFTING.title": "Drifting",
-  "USCE-DRIFTING.description": "When you play another card, discard this from your [gold]hand[/gold], then draw [blue]1[/blue] card."
+  "USCE-DRIFTING.description": "When you play another card, discard this from your [gold]Hand[/gold], then draw [blue]1[/blue] card.",
+  "USCE-KINETIC.title": "Kinetic",
+  "USCE-KINETIC.description": "Each time you play this card this combat, increase each of its effect values by [blue]1[/blue]."
 }
