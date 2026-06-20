@@ -41,7 +41,7 @@ public class Inverted : SilentCardModel, ILocalizationProvider
     public override List<(string, string)>? Localization => LocManager.Instance.Language switch
     {
         "zhs" => new CardLoc("倒立", "获得{Block:diff()}点[gold]格挡[/gold]。\n给[gold]手牌[/gold]中的一张牌添加[gold]游离[/gold]。"),
-        _ => new CardLoc("Inverted", "Gain {Block:diff()} [gold]Block[/gold].\nAdd [gold]Drifting[/gold] to a card in your [gold]hand[/gold].")
+        _ => new CardLoc("Inverted", "Gain {Block:diff()} [gold]Block[/gold].\nAdd [gold]Drifting[/gold] to a card in your [gold]Hand[/gold].")
     };
 
     public Inverted() : base(energyCost, type, rarity, TargetType.Self)

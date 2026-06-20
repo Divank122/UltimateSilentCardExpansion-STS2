@@ -25,7 +25,7 @@ public class Sedative : SilentCardModel, ILocalizationProvider
     public override List<(string, string)>? Localization => LocManager.Instance.Language switch
     {
         "zhs" => new CardLoc("镇静剂", "抽牌直到抽满[gold]手牌[/gold]。\n这张牌在本场战斗中的耗能增加{energyPrefix:energyIcons(1)}。"),
-        _ => new CardLoc("Sedative", "Draw cards until your [gold]hand[/gold] is full.\nThis card's cost increases by {energyPrefix:energyIcons(1)} for the rest of combat.")
+        _ => new CardLoc("Sedative", "Draw cards until your [gold]Hand[/gold] is full.\nThis card's cost increases by {energyPrefix:energyIcons(1)} for the rest of combat.")
     };
 
     public Sedative() : base(energyCost, type, rarity, targetType)

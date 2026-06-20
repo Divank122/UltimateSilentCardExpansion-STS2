@@ -40,6 +40,6 @@ public class Calculated : SilentCardModel, ILocalizationProvider
     public override List<(string, string)>? Localization => LocManager.Instance.Language switch
     {
         "zhs" => new CardLoc("精打细算", "在你的回合结束时，每有一张[gold]手牌[/gold]，就对所有敌人造成{Damage}点伤害。"),
-        _ => new CardLoc("Calculated", "At the end of your turn, deal {Damage} damage to ALL enemies for each card in your hand.")
+        _ => new CardLoc("Calculated", "At the end of your turn, deal {Damage} damage to ALL enemies for each card in your [gold]Hand[/gold].")
     };
 }

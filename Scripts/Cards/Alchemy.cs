@@ -29,8 +29,8 @@ public class Alchemy : SilentCardModel
 
     public override List<(string, string)>? Localization => LocManager.Instance.Language switch
     {
-        "zhs" => new CardLoc("炼金术", "获得{Gold:diff()}金币。"),
-        _ => new CardLoc("Alchemy", "Gain {Gold:diff()} gold.")
+        "zhs" => new CardLoc("炼金术", "获得{Gold:diff()}[gold]金币[/gold]。"),
+        _ => new CardLoc("Alchemy", "Gain {Gold:diff()} [gold]Gold[/gold].")
     };
 
     public Alchemy() : base(energyCost, type, rarity, targetType)

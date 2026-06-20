@@ -27,7 +27,7 @@ public class GustStep : SilentCardModel, ILocalizationProvider
     public override List<(string, string)>? Localization => LocManager.Instance.Language switch
     {
         "zhs" => new CardLoc("疾风步", "丢弃所有[gold]手牌[/gold]。\n抽{Cards:diff()}张牌。"),
-        _ => new CardLoc("Gust Step", "Discard your [gold]hand[/gold].\nDraw {Cards:diff()} cards.")
+        _ => new CardLoc("Gust Step", "Discard your [gold]Hand[/gold].\nDraw {Cards:diff()} cards.")
     };
 
     public GustStep() : base(energyCost, type, rarity, targetType)

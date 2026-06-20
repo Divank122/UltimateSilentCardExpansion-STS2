@@ -45,6 +45,6 @@ public class Effortless : SilentCardModel, ILocalizationProvider
     public override List<(string, string)>? Localization => LocManager.Instance.Language switch
     {
         "zhs" => new CardLoc("游刃有余", "每当你打出一张不是[gold]小刀[/gold]的攻击牌时，将一张[gold]{IfUpgraded:show:小刀+|小刀}[/gold]添加到你的[gold]手牌[/gold]。"),
-        _ => new CardLoc("Effortless", "Whenever you play a non-[gold]Shiv[/gold] Attack, add a [gold]{IfUpgraded:show:Shiv+|Shiv}[/gold] to your [gold]hand[/gold].")
+        _ => new CardLoc("Effortless", "Whenever you play a non-[gold]Shiv[/gold] Attack, add a [gold]{IfUpgraded:show:Shiv+|Shiv}[/gold] into your [gold]Hand[/gold].")
     };
 }

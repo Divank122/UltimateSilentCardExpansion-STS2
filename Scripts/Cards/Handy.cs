@@ -29,7 +29,7 @@ public class Handy : SilentCardModel, ILocalizationProvider
     public override List<(string, string)>? Localization => LocManager.Instance.Language switch
     {
         "zhs" => new CardLoc("得心应手", "从你的[gold]抽牌堆[/gold]中选择{Cards:diff()}张牌，将其放入你的[gold]手牌[/gold]并丢弃。"),
-        _ => new CardLoc("Handy", "Choose {Cards:diff()} cards from your [gold]draw pile[/gold], put them into your [gold]hand[/gold] and discard.")
+        _ => new CardLoc("Handy", "Choose {Cards:diff()} cards from your [gold]Draw Pile[/gold], put them into your [gold]Hand[/gold] and discard.")
     };
 
     public Handy() : base(energyCost, type, rarity, targetType)

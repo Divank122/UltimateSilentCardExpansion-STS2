@@ -7,6 +7,7 @@ using MegaCrit.Sts2.Core.Entities.Cards;
 using MegaCrit.Sts2.Core.GameActions.Multiplayer;
 using MegaCrit.Sts2.Core.HoverTips;
 using MegaCrit.Sts2.Core.Localization;
+using MegaCrit.Sts2.Core.Localization.DynamicVars;
 using MegaCrit.Sts2.Core.Models.CardPools;
 using USCE.Scripts.Enchantments;
 
@@ -26,6 +27,11 @@ public class BladeOfFrost : SilentCardModel, ILocalizationProvider
         }
     }
 
+    protected override IEnumerable<DynamicVar> CanonicalVars =>
+    [
+        new CardsVar(2)
+    ];
+
     public BladeOfFrost()
         : base(1, CardType.Skill, CardRarity.Rare, TargetType.Self)
     {
@@ -33,7 +39,7 @@ public class BladeOfFrost : SilentCardModel, ILocalizationProvider
 
     protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
     {
-        foreach (var shiv in await MegaCrit.Sts2.Core.Models.Cards.Shiv.CreateInHand(Owner, 2, CombatState!))
+        foreach (var shiv in await MegaCrit.Sts2.Core.Models.Cards.Shiv.CreateInHand(Owner, DynamicVars.Cards.IntValue, CombatState!))
         {
             CardCmd.Enchant<Frosty>(shiv, 1m);
             if (IsUpgraded)
@@ -45,11 +51,12 @@ public class BladeOfFrost : SilentCardModel, ILocalizationProvider
 
     protected override void OnUpgrade()
     {
+        DynamicVars.Cards.UpgradeValueBy(1m);
     }
 
     public override List<(string, string)>? Localization => LocManager.Instance.Language switch
     {
-        "zhs" => new CardLoc("霜之刃", "添加2张[purple]寒霜[/purple][gold]{IfUpgraded:show:小刀+|小刀}[/gold]到你的[gold]手牌[/gold]。"),
-        _ => new CardLoc("Blade of Frost", "Add 2 [purple]Frosty[/purple] [gold]{IfUpgraded:show:Shiv+|Shiv}[/gold](s) to your [gold]hand[/gold].")
+        "zhs" => new CardLoc("霜之刃", "添加{Cards:diff()}张[purple]寒霜[/purple][gold]{Cards:plural:小刀|小刀}[/gold]到你的[gold]手牌[/gold]。"),
+        _ => new CardLoc("Blade of Frost", "Add {Cards:diff()} [purple]Frosty[/purple] [gold]{Cards:plural:Shiv|Shivs}[/gold] into your [gold]Hand[/gold].")
     };
 }

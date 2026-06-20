@@ -47,6 +47,6 @@ public class ReadyAndWaiting : SilentCardModel, ILocalizationProvider
     public override List<(string, string)>? Localization => LocManager.Instance.Language switch
     {
         "zhs" => new CardLoc("有备而来", "每当你触发[gold]奇巧[/gold]时，添加1张[gold]{IfUpgraded:show:小刀+|小刀}[/gold]到你的[gold]手牌[/gold]。"),
-        _ => new CardLoc("Ready And Waiting", "Whenever you trigger [gold]Sly[/gold], add 1 [gold]{IfUpgraded:show:Shiv+|Shiv}[/gold] to your [gold]Hand[/gold].")
+        _ => new CardLoc("Ready And Waiting", "Whenever you trigger [gold]Sly[/gold], add 1 [gold]{IfUpgraded:show:Shiv+|Shiv}[/gold] into your [gold]Hand[/gold].")
     };
 }

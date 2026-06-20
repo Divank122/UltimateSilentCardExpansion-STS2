@@ -39,8 +39,8 @@ public class BladeMountain : SilentCardModel, ILocalizationProvider
 
     public override List<(string, string)>? Localization => LocManager.Instance.Language switch
     {
-        "zhs" => new CardLoc("刀山", "每当你获得[gold]小刀[/gold]时，改为获得[gold]{IfUpgraded:show:巨刀+|巨刀}[/gold]。"),
-        _ => new CardLoc("Blade Mountain", "Whenever you gain a [gold]Shiv[/gold], gain a [gold]{IfUpgraded:show:Great Blade+|Great Blade}[/gold] instead.")
+        "zhs" => new CardLoc("刀山", "每当你将要获得[gold]小刀[/gold]时，改为获得[gold]{IfUpgraded:show:巨刀+|巨刀}[/gold]。"),
+        _ => new CardLoc("Blade Mountain", "Whenever you would gain a [gold]Shiv[/gold], gain a [gold]{IfUpgraded:show:Great Blade+|Great Blade}[/gold] instead.")
     };
 
     public BladeMountain() : base(energyCost, type, rarity, targetType)

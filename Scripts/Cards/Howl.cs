@@ -34,7 +34,7 @@ public class Howl : SilentCardModel, ILocalizationProvider, IKineticCard
     public override List<(string, string)>? Localization => LocManager.Instance.Language switch
     {
         "zhs" => new CardLoc("呼啸", "对所有敌人造成{Damage:diff()}点伤害{Repeat:diff()}次。抽{Cards:diff()}张牌。"),
-        _ => new CardLoc("Howl", "Deal {Damage:diff()} damage to ALL enemies {Repeat:diff()} times. Draw {Cards:diff()} cards.")
+        _ => new CardLoc("Howl", "Deal {Damage:diff()} damage to ALL enemies {Repeat:diff()} times.\nDraw {Cards:diff()} cards.")
     };
 
     public override IEnumerable<CardKeyword> CanonicalKeywords => [USCEKeywords.Kinetic];

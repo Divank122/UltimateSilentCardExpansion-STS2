@@ -50,6 +50,7 @@ public class Amulet : SilentCardModel
 
     protected override IEnumerable<IHoverTip> ExtraHoverTips =>
     [
+        HoverTipFactory.FromPower<PoisonPower>(),
         EnergyHoverTip
     ];
 

@@ -60,7 +60,7 @@ public sealed class GreatBlade : SilentCardModel
     public override List<(string, string)>? Localization => LocManager.Instance.Language switch
     {
         "zhs" => new CardLoc("巨刀", "造成{Damage:diff()}点伤害。\n你的[gold]手牌[/gold]中每有一张其他[gold]小刀[/gold]，这张牌的伤害减半一次。"),
-        _ => new CardLoc("Great Blade", "Deal {Damage:diff()} damage.\nFor each other [gold]Shiv[/gold] in your [gold]hand[/gold], this card's damage is halved.")
+        _ => new CardLoc("Great Blade", "Deal {Damage:diff()} damage.\nFor each other [gold]Shiv[/gold] in your [gold]Hand[/gold], this card's damage is halved.")
     };
 
     public GreatBlade() : base(0, CardType.Attack, CardRarity.Token, TargetType.AnyEnemy)

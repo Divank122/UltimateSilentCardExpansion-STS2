@@ -49,7 +49,7 @@ public class ChaosStrike : SilentCardModel
     public override List<(string, string)>? Localization => LocManager.Instance.Language switch
     {
         "zhs" => new CardLoc("混乱打击", "造成{Damage:diff()}点伤害2次。\n丢弃2张牌。"),
-        _ => new CardLoc("Chaos Strike", "Deal {Damage:diff()} damage twice. \nDiscard 2 cards.")
+        _ => new CardLoc("Chaos Strike", "Deal {Damage:diff()} damage twice.\nDiscard 2 cards.")
     };
 
     public ChaosStrike() : base(energyCost, type, rarity, targetType)

@@ -42,7 +42,7 @@ public class Storm : SilentCardModel, ILocalizationProvider
     public override List<(string, string)>? Localization => LocManager.Instance.Language switch
     {
         "zhs" => new CardLoc("风暴", "造成{Damage:diff()}点伤害。\n[gold]斩杀[/gold]时，获得1个[gold]意外光滑的石头[/gold]。"),
-        _ => new CardLoc("Storm", "Deal {Damage:diff()} damage.\nOn [gold]kill[/gold], gain 1 [gold]Oddly Smooth Stone[/gold].")
+        _ => new CardLoc("Storm", "Deal {Damage:diff()} damage.\nIf [gold]Fatal[/gold], gain 1 [gold]Oddly Smooth Stone[/gold].")
     };
 
     public Storm() : base(energyCost, type, rarity, targetType)

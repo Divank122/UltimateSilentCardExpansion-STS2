@@ -43,7 +43,7 @@ public class Dissolve : SilentCardModel
     public override List<(string, string)>? Localization => LocManager.Instance.Language switch
     {
         "zhs" => new CardLoc("消解", "给予{PoisonAmount:diff()}层[gold]中毒[/gold]。\n每当你弃牌时，将这张牌放入你的[gold]手牌[/gold]。"),
-        _ => new CardLoc("Dissolve", "Apply {PoisonAmount:diff()} [gold]Poison[/gold].\nWhenever you discard, put this card into your [gold]hand[/gold].")
+        _ => new CardLoc("Dissolve", "Apply {PoisonAmount:diff()} [gold]Poison[/gold].\nWhenever you discard, put this card into your [gold]Hand[/gold].")
     };
 
     public Dissolve() : base(energyCost, type, rarity, targetType)

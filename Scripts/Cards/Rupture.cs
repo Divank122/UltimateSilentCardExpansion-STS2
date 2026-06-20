@@ -9,6 +9,7 @@ using MegaCrit.Sts2.Core.HoverTips;
 using MegaCrit.Sts2.Core.Localization;
 using MegaCrit.Sts2.Core.Localization.DynamicVars;
 using MegaCrit.Sts2.Core.Models.CardPools;
+using MegaCrit.Sts2.Core.Models.Powers;
 using MegaCrit.Sts2.Core.ValueProps;
 using USCE.Scripts.Powers;
 
@@ -27,12 +28,17 @@ public class Rupture : SilentCardModel, ILocalizationProvider
         new DamageVar(16m, ValueProp.Move)
     ];
 
+    protected override IEnumerable<IHoverTip> ExtraHoverTips =>
+    [
+        HoverTipFactory.FromPower<PoisonPower>()
+    ];
+
 
 
     public override List<(string, string)>? Localization => LocManager.Instance.Language switch
     {
-        "zhs" => new CardLoc("割破", "造成{Damage:diff()}点伤害。\n你打出的下一张与[gold]中毒[/gold]相关的牌耗能变为0。"),
-        _ => new CardLoc("Rupture", "Deal {Damage:diff()} damage.\nYour next [gold]Poison[/gold]-related card you play costs 0.")
+        "zhs" => new CardLoc("割破", "造成{Damage:diff()}点伤害。\n你打出的下一张描述中有[gold]中毒[/gold]的牌耗能变为0{energyPrefix:energyIcons(1)}。"),
+        _ => new CardLoc("Rupture", "Deal {Damage:diff()} damage.\nThe next card you play with [gold]Poison[/gold] in its description costs 0 {energyPrefix:energyIcons(1)}.")
     };
 
     public Rupture() : base(energyCost, type, rarity, targetType)

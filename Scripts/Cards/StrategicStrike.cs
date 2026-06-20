@@ -31,7 +31,7 @@ public class StrategicStrike : SilentCardModel, ILocalizationProvider
     public override List<(string, string)>? Localization => LocManager.Instance.Language switch
     {
         "zhs" => new CardLoc("策略打击", "对所有敌人造成{Damage:diff()}点伤害。\n丢弃所有技能牌。"),
-        _ => new CardLoc("Strategic Strike", "Deal {Damage:diff()} damage to ALL enemies.\nDiscard all Skill cards.")
+        _ => new CardLoc("Strategic Strike", "Deal {Damage:diff()} damage to ALL enemies.\nDiscard all Skills.")
     };
 
     public StrategicStrike() : base(energyCost, type, rarity, targetType)

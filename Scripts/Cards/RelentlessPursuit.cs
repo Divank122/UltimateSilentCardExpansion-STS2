@@ -29,7 +29,7 @@ public class RelentlessPursuit : SilentCardModel, ILocalizationProvider
     public override List<(string, string)>? Localization => LocManager.Instance.Language switch
     {
         "zhs" => new CardLoc("穷追不舍", "打出攻击牌时，如果你的[gold]手牌[/gold]中有与其名字相同的牌，额外造成{RelentlessPursuitPower:diff()}点伤害。"),
-        _ => new CardLoc("Relentless Pursuit", "When you play an Attack, if you have a card with the same name in your [gold]hand[/gold], deal {RelentlessPursuitPower:diff()} extra damage.")
+        _ => new CardLoc("Relentless Pursuit", "When you play an Attack, if you have a card with the same name in your [gold]Hand[/gold], deal {RelentlessPursuitPower:diff()} additional damage.")
     };
 
     public RelentlessPursuit() : base(energyCost, type, rarity, targetType)

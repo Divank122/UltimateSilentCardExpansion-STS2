@@ -44,7 +44,7 @@ public class Counterstrike : SilentCardModel, ILocalizationProvider
     public override List<(string, string)>? Localization => LocManager.Instance.Language switch
     {
         "zhs" => new CardLoc("针锋相对", "造成{Damage:diff()}点伤害。\n如果敌人的意图是攻击，额外造成2次伤害。"),
-        _ => new CardLoc("Counterstrike", "Deal {Damage:diff()} damage. If the enemy intends to attack, deal damage 2 more times.")
+        _ => new CardLoc("Counterstrike", "Deal {Damage:diff()} damage.\nIf the enemy intends to attack, deal damage 2 more times.")
     };
 
     public Counterstrike() : base(energyCost, type, rarity, targetType)

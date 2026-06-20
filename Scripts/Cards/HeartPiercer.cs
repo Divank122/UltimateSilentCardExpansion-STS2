@@ -38,7 +38,7 @@ public class HeartPiercer : SilentCardModel, ILocalizationProvider
     public override List<(string, string)>? Localization => LocManager.Instance.Language switch
     {
         "zhs" => new CardLoc("钻心", "[gold]小刀[/gold]额外给予{HeartPiercerPower:diff()}层[gold]中毒[/gold]。\n将{ShivCount:diff()}张[gold]小刀[/gold]添加到你的[gold]手牌[/gold]。"),
-        _ => new CardLoc("Heart Piercer", "[gold]Shivs[/gold] deal additional {HeartPiercerPower:diff()} [gold]Poison[/gold].\nAdd {ShivCount:diff()} [gold]Shivs[/gold] to your [gold]hand[/gold].")
+        _ => new CardLoc("Heart Piercer", "[gold]Shivs[/gold] apply additional {HeartPiercerPower:diff()} [gold]Poison[/gold].\nAdd {ShivCount:diff()} [gold]{ShivCount:plural:Shiv|Shivs}[/gold] into your [gold]Hand[/gold].")
     };
 
     public HeartPiercer() : base(energyCost, type, rarity, targetType)
