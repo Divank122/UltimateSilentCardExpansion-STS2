@@ -17,7 +17,7 @@ using MegaCrit.Sts2.Core.ValueProps;
 namespace USCE.Scripts.Cards;
 
 [Pool(typeof(SilentCardPool))]
-public class Counterstrike : SilentCardModel, ILocalizationProvider
+public class Riposte : SilentCardModel, ILocalizationProvider
 {
     private const int energyCost = 2;
     private const CardType type = CardType.Attack;
@@ -44,10 +44,10 @@ public class Counterstrike : SilentCardModel, ILocalizationProvider
     public override List<(string, string)>? Localization => LocManager.Instance.Language switch
     {
         "zhs" => new CardLoc("针锋相对", "造成{Damage:diff()}点伤害。\n如果敌人的意图是攻击，额外造成2次伤害。"),
-        _ => new CardLoc("Counterstrike", "Deal {Damage:diff()} damage.\nIf the enemy intends to attack, deal damage 2 more times.")
+        _ => new CardLoc("Riposte", "Deal {Damage:diff()} damage.\nIf the enemy intends to attack, deal damage 2 more times.")
     };
 
-    public Counterstrike() : base(energyCost, type, rarity, targetType)
+    public Riposte() : base(energyCost, type, rarity, targetType)
     {
     }
 

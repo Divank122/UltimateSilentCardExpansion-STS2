@@ -18,7 +18,7 @@ using USCE.Scripts.Powers;
 namespace USCE.Scripts.Cards;
 
 [Pool(typeof(SilentCardPool))]
-public class DissolveForge : SilentCardModel, ILocalizationProvider
+public class Meltforge : SilentCardModel, ILocalizationProvider
 {
     private const int energyCost = 2;
     private const CardType type = CardType.Power;
@@ -46,10 +46,10 @@ public class DissolveForge : SilentCardModel, ILocalizationProvider
     public override List<(string, string)>? Localization => LocManager.Instance.Language switch
     {
         "zhs" => new CardLoc("溶制", "给予所有敌人{PoisonPower:diff()}层[gold]中毒[/gold]。\n战斗结束时将一张[purple]骨制[/purple][gold]{IfUpgraded:show:小刀+|小刀}[/gold]加入你的牌组。"),
-        _ => new CardLoc("Dissolve Forge", "Apply {PoisonPower:diff()} [gold]Poison[/gold] to ALL enemies.\nAt the end of combat, add a [purple]Bone[/purple] [gold]{IfUpgraded:show:Shiv+|Shiv}[/gold] to your deck.")
+        _ => new CardLoc("Meltforge", "Apply {PoisonPower:diff()} [gold]Poison[/gold] to ALL enemies.\nAt the end of combat, add a [purple]Bone[/purple] [gold]{IfUpgraded:show:Shiv+|Shiv}[/gold] to your deck.")
     };
 
-    public DissolveForge() : base(energyCost, type, rarity, targetType)
+    public Meltforge() : base(energyCost, type, rarity, targetType)
     {
     }
 

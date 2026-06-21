@@ -13,7 +13,7 @@ using USCE.Scripts.Powers;
 namespace USCE.Scripts.Cards;
 
 [Pool(typeof(SilentCardPool))]
-public class Alchemy : SilentCardModel
+public class Transmutation : SilentCardModel
 {
     private const int energyCost = 2;
     private const CardType type = CardType.Skill;
@@ -30,10 +30,10 @@ public class Alchemy : SilentCardModel
     public override List<(string, string)>? Localization => LocManager.Instance.Language switch
     {
         "zhs" => new CardLoc("炼金术", "获得{Gold:diff()}[gold]金币[/gold]。"),
-        _ => new CardLoc("Alchemy", "Gain {Gold:diff()} [gold]Gold[/gold].")
+        _ => new CardLoc("Transmutation", "Gain {Gold:diff()} [gold]Gold[/gold].")
     };
 
-    public Alchemy() : base(energyCost, type, rarity, targetType)
+    public Transmutation() : base(energyCost, type, rarity, targetType)
     {
     }
 

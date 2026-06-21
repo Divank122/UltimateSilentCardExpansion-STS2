@@ -17,7 +17,7 @@ using MegaCrit.Sts2.Core.ValueProps;
 namespace USCE.Scripts.Cards;
 
 [Pool(typeof(SilentCardPool))]
-public class Howl : SilentCardModel, ILocalizationProvider, IKineticCard
+public class Wuthering : SilentCardModel, ILocalizationProvider, IKineticCard
 {
     private const int energyCost = 1;
     private const CardType type = CardType.Attack;
@@ -34,12 +34,12 @@ public class Howl : SilentCardModel, ILocalizationProvider, IKineticCard
     public override List<(string, string)>? Localization => LocManager.Instance.Language switch
     {
         "zhs" => new CardLoc("呼啸", "对所有敌人造成{Damage:diff()}点伤害{Repeat:diff()}次。抽{Cards:diff()}张牌。"),
-        _ => new CardLoc("Howl", "Deal {Damage:diff()} damage to ALL enemies {Repeat:diff()} times.\nDraw {Cards:diff()} cards.")
+        _ => new CardLoc("Wuthering", "Deal {Damage:diff()} damage to ALL enemies {Repeat:diff()} times.\nDraw {Cards:diff()} cards.")
     };
 
     public override IEnumerable<CardKeyword> CanonicalKeywords => [USCEKeywords.Kinetic];
 
-    public Howl() : base(energyCost, type, rarity, targetType)
+    public Wuthering() : base(energyCost, type, rarity, targetType)
     {
     }
 

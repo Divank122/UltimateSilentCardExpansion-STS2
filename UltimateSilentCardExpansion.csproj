@@ -22,7 +22,7 @@
     </Reference>
 
     <Reference Include="BaseLib">
-      <HintPath>$(Sts2Dir)\mods\BaseLib\BaseLib.dll</HintPath>
+      <HintPath>D:\Program Files (x86)\Steam\steamapps\workshop\content\2868840\3737335127\BaseLib\BaseLib.dll</HintPath>
       <Private>false</Private>
     </Reference>
   </ItemGroup>

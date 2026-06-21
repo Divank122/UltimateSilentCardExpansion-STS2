@@ -15,7 +15,7 @@ using USCE.Scripts.Powers;
 namespace USCE.Scripts.Cards;
 
 [Pool(typeof(SilentCardPool))]
-public class CorrosiveBurst : SilentCardModel, ILocalizationProvider
+public class AcuteCorrosion : SilentCardModel, ILocalizationProvider
 {
     private const int energyCost = 3;
     private const CardType type = CardType.Power;
@@ -35,10 +35,10 @@ public class CorrosiveBurst : SilentCardModel, ILocalizationProvider
     public override List<(string, string)>? Localization => LocManager.Instance.Language switch
     {
         "zhs" => new CardLoc("猛蚀", "每当你给予敌人[gold]中毒[/gold]，使其受到{CorrosiveBurstPower:diff()}点伤害。"),
-        _ => new CardLoc("Corrosive Burst", "Whenever you apply [gold]Poison[/gold] to an enemy, they take {CorrosiveBurstPower:diff()} damage.")
+        _ => new CardLoc("Acute Corrosion", "Whenever you apply [gold]Poison[/gold] to an enemy, they take {CorrosiveBurstPower:diff()} damage.")
     };
 
-    public CorrosiveBurst() : base(energyCost, type, rarity, targetType)
+    public AcuteCorrosion() : base(energyCost, type, rarity, targetType)
     {
     }
 

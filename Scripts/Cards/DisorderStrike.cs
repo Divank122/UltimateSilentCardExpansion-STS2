@@ -23,7 +23,7 @@ using USCE.Scripts.Powers;
 namespace USCE.Scripts.Cards;
 
 [Pool(typeof(SilentCardPool))]
-public class ChaosStrike : SilentCardModel
+public class DisorderStrike : SilentCardModel
 {
     private const int energyCost = 1;
     private const CardType type = CardType.Attack;
@@ -36,7 +36,7 @@ public class ChaosStrike : SilentCardModel
     { 
         get
         {
-            GD.Print($"[ChaosStrike] CanonicalKeywords called, Drifting value: {USCEKeywords.Drifting}");
+            GD.Print($"[DisorderStrike] CanonicalKeywords called, Drifting value: {USCEKeywords.Drifting}");
             return [USCEKeywords.Drifting];
         }
     }
@@ -49,10 +49,10 @@ public class ChaosStrike : SilentCardModel
     public override List<(string, string)>? Localization => LocManager.Instance.Language switch
     {
         "zhs" => new CardLoc("混乱打击", "造成{Damage:diff()}点伤害2次。\n丢弃2张牌。"),
-        _ => new CardLoc("Chaos Strike", "Deal {Damage:diff()} damage twice.\nDiscard 2 cards.")
+        _ => new CardLoc("Disorder Strike", "Deal {Damage:diff()} damage twice.\nDiscard 2 cards.")
     };
 
-    public ChaosStrike() : base(energyCost, type, rarity, targetType)
+    public DisorderStrike() : base(energyCost, type, rarity, targetType)
     {
     }
 

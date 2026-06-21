@@ -20,8 +20,8 @@ public class FreePoisonPower : CustomPowerModel
 
     public override List<(string, string)>? Localization => LocManager.Instance.Language switch
     {
-        "zhs" => new PowerLoc("免费毒药", "你打出的下一张与[gold]中毒[/gold]相关的牌耗能为0{energyPrefix:energyIcons(1)}。", "你打出的下[blue]{Amount}[/blue]张与[gold]中毒[/gold]相关的牌耗能为0{energyPrefix:energyIcons(1)}。"),
-        _ => new PowerLoc("Free Poison", "Your next [gold]Poison[/gold]-related card you play costs 0 {energyPrefix:energyIcons(1)}.", "Your next [blue]{Amount}[/blue] [gold]Poison[/gold]-related cards you play cost 0 {energyPrefix:energyIcons(1)}.")
+        "zhs" => new PowerLoc("免费毒药", "你打出的下一张描述中有[gold]中毒[/gold]的牌耗能为0{energyPrefix:energyIcons(1)}。", "你打出的下[blue]{Amount}[/blue]张描述中有[gold]中毒[/gold]的牌耗能为0{energyPrefix:energyIcons(1)}。"),
+        _ => new PowerLoc("Free Poison", "The next card you play with [gold]Poison[/gold] in its description costs 0 {energyPrefix:energyIcons(1)}.", "The next [blue]{Amount}[/blue] cards you play with [gold]Poison[/gold] in their description cost 0 {energyPrefix:energyIcons(1)}.")
     };
 
     private static bool IsPoisonRelatedCard(CardModel card)
@@ -40,7 +40,7 @@ public class FreePoisonPower : CustomPowerModel
             MegaCrit.Sts2.Core.Models.Cards.CorrosiveWave => true,
             MegaCrit.Sts2.Core.Models.Cards.Accelerant => true,
             MegaCrit.Sts2.Core.Models.Cards.Envenom => true,
-            Cards.CorrosiveBurst => true,
+            Cards.AcuteCorrosion => true,
             Cards.Clot => true,
             Cards.Bane => true,
             Cards.ConfusingImpact => true,
@@ -48,7 +48,7 @@ public class FreePoisonPower : CustomPowerModel
             Cards.Amulet => true,
             Cards.Squirm => true,
             Cards.HeartPiercer => true,
-            Cards.DissolveForge => true,
+            Cards.Meltforge => true,
             _ => false
         };
     }

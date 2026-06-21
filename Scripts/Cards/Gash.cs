@@ -16,7 +16,7 @@ using USCE.Scripts.Powers;
 namespace USCE.Scripts.Cards;
 
 [Pool(typeof(SilentCardPool))]
-public class Rupture : SilentCardModel, ILocalizationProvider
+public class Gash : SilentCardModel, ILocalizationProvider
 {
     private const int energyCost = 2;
     private const CardType type = CardType.Attack;
@@ -38,10 +38,10 @@ public class Rupture : SilentCardModel, ILocalizationProvider
     public override List<(string, string)>? Localization => LocManager.Instance.Language switch
     {
         "zhs" => new CardLoc("割破", "造成{Damage:diff()}点伤害。\n你打出的下一张描述中有[gold]中毒[/gold]的牌耗能变为0{energyPrefix:energyIcons(1)}。"),
-        _ => new CardLoc("Rupture", "Deal {Damage:diff()} damage.\nThe next card you play with [gold]Poison[/gold] in its description costs 0 {energyPrefix:energyIcons(1)}.")
+        _ => new CardLoc("Gash", "Deal {Damage:diff()} damage.\nThe next card you play with [gold]Poison[/gold] in its description costs 0 {energyPrefix:energyIcons(1)}.")
     };
 
-    public Rupture() : base(energyCost, type, rarity, targetType)
+    public Gash() : base(energyCost, type, rarity, targetType)
     {
     }
 

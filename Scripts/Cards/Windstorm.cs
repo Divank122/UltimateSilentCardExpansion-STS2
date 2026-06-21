@@ -22,7 +22,7 @@ using MegaCrit.Sts2.Core.ValueProps;
 namespace USCE.Scripts.Cards;
 
 [Pool(typeof(SilentCardPool))]
-public class Storm : SilentCardModel, ILocalizationProvider
+public class Windstorm : SilentCardModel, ILocalizationProvider
 {
     private const int energyCost = 4;
     private const CardType type = CardType.Attack;
@@ -42,10 +42,10 @@ public class Storm : SilentCardModel, ILocalizationProvider
     public override List<(string, string)>? Localization => LocManager.Instance.Language switch
     {
         "zhs" => new CardLoc("风暴", "造成{Damage:diff()}点伤害。\n[gold]斩杀[/gold]时，获得1个[gold]意外光滑的石头[/gold]。"),
-        _ => new CardLoc("Storm", "Deal {Damage:diff()} damage.\nIf [gold]Fatal[/gold], gain 1 [gold]Oddly Smooth Stone[/gold].")
+        _ => new CardLoc("Windstorm", "Deal {Damage:diff()} damage.\nIf [gold]Fatal[/gold], gain 1 [gold]Oddly Smooth Stone[/gold].")
     };
 
-    public Storm() : base(energyCost, type, rarity, targetType)
+    public Windstorm() : base(energyCost, type, rarity, targetType)
     {
     }
 

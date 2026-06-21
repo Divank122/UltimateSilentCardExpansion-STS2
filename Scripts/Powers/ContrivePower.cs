@@ -13,18 +13,18 @@ using MegaCrit.Sts2.Core.ValueProps;
 
 namespace USCE.Scripts.Powers;
 
-public class CalculatedPower : CustomPowerModel
+public class ContrivePower : CustomPowerModel
 {
     public override PowerType Type => PowerType.Buff;
     public override PowerStackType StackType => PowerStackType.Counter;
 
-    public override string? CustomPackedIconPath => "res://UltimateSilentCardExpansion/images/powers/usce_calculated_power.png";
-    public override string? CustomBigIconPath => "res://UltimateSilentCardExpansion/images/powers/usce_calculated_power.png";
+    public override string? CustomPackedIconPath => "res://UltimateSilentCardExpansion/images/powers/usce_contrive_power.png";
+    public override string? CustomBigIconPath => "res://UltimateSilentCardExpansion/images/powers/usce_contrive_power.png";
 
     public override List<(string, string)>? Localization => LocManager.Instance.Language switch
     {
         "zhs" => new PowerLoc("精打细算", "在你的回合结束时，每有一张[gold]手牌[/gold]，就对所有敌人造成2点伤害。", "在你的回合结束时，每有一张[gold]手牌[/gold]，就对所有敌人造成[blue]{Amount}[/blue]点伤害。"),
-        _ => new PowerLoc("Calculated", "At the end of your turn, deal 2 damage to ALL enemies for each card in your hand.", "At the end of your turn, deal [blue]{Amount}[/blue] damage to ALL enemies for each card in your hand.")
+        _ => new PowerLoc("Contrive", "At the end of your turn, deal 2 damage to ALL enemies for each card in your hand.", "At the end of your turn, deal [blue]{Amount}[/blue] damage to ALL enemies for each card in your hand.")
     };
 
     public override async Task BeforeSideTurnEnd(PlayerChoiceContext choiceContext, CombatSide side, IEnumerable<Creature> participants)
