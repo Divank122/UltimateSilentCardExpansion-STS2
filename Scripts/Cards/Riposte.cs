@@ -58,7 +58,7 @@ public class Riposte : SilentCardModel, ILocalizationProvider
         int damage = (int)DynamicVars.Damage.BaseValue;
         int hitCount = cardPlay.Target.Monster?.IntendsToAttack == true ? 3 : 1;
 
-        await DamageCmd.Attack(damage).WithHitCount(hitCount).FromCard(this).Targeting(cardPlay.Target)
+        await DamageCmd.Attack(damage).FromCardCompatibility(this, cardPlay).Targeting(cardPlay.Target).WithHitCount(hitCount)
             .WithHitVfxNode((Creature t) => NBigSlashVfx.Create(t))
             .WithHitVfxNode((Creature t) => NBigSlashImpactVfx.Create(t))
             .Execute(choiceContext);

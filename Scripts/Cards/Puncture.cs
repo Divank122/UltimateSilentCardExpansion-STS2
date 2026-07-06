@@ -54,7 +54,7 @@ public class Puncture : SilentCardModel
         if (isSlyPlay)
         {
             int slyDamage = DynamicVars["SlyDamage"].IntValue;
-            await DamageCmd.Attack(slyDamage).FromCard(this).Targeting(cardPlay.Target)
+            await DamageCmd.Attack(slyDamage).FromCardCompatibility(this, cardPlay).Targeting(cardPlay.Target)
                 .WithAttackerFx(() => NDaggerSprayFlurryVfx.Create(Owner.Creature, new Color("#b1ccca"), goingRight: true))
                 .BeforeDamage(delegate
                 {
@@ -69,7 +69,7 @@ public class Puncture : SilentCardModel
             int damage = DynamicVars.Damage.IntValue;
             int repeat = DynamicVars.Repeat.IntValue;
 
-            await DamageCmd.Attack(damage).WithHitCount(repeat).FromCard(this).Targeting(cardPlay.Target)
+            await DamageCmd.Attack(damage).FromCardCompatibility(this, cardPlay).Targeting(cardPlay.Target).WithHitCount(repeat)
                 .WithAttackerFx(() => NDaggerSprayFlurryVfx.Create(Owner.Creature, new Color("#b1ccca"), goingRight: true))
                 .BeforeDamage(delegate
                 {

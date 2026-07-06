@@ -39,6 +39,6 @@ public class ContrivePower : CustomPowerModel
         int totalDamage = (int)(cards.Count * Amount);
         Flash();
         VfxCmd.PlayOnCreatureCenters(CombatState.HittableEnemies, "vfx/vfx_attack_slash");
-        await CreatureCmd.Damage(choiceContext, CombatState.HittableEnemies, totalDamage, ValueProp.Unpowered, Owner, null);
+        await CreatureCmd.Damage(choiceContext, CombatState.HittableEnemies, totalDamage, ValueProp.Unpowered, Owner);
     }
 }

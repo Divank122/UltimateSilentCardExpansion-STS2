@@ -69,7 +69,7 @@ public class GhostDagger : SilentCardModel, ILocalizationProvider
         bool hasWeakBefore = cardPlay.Target.GetPower<WeakPower>() != null;
 
         int damage = (int)DynamicVars.Damage.BaseValue;
-        await DamageCmd.Attack(damage).FromCard(this).Targeting(cardPlay.Target)
+        await DamageCmd.Attack(damage).FromCardCompatibility(this, cardPlay).Targeting(cardPlay.Target)
             .WithHitFx("vfx/vfx_attack_slash")
             .Execute(choiceContext);
 

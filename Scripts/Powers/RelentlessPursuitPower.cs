@@ -26,7 +26,10 @@ public class RelentlessPursuitPower : CustomPowerModel
         _ => new PowerLoc("Relentless Pursuit", "When you play an Attack, if you have a card with the same name in your hand, deal 4 extra damage.", "When you play an Attack, if you have a card with the same name in your [gold]hand[/gold], deal [blue]{Amount}[/blue] extra damage.")
     };
 
-    public override decimal ModifyDamageAdditive(Creature? target, decimal amount, ValueProp props, Creature? dealer, CardModel? cardSource)
+    /// <summary>
+    /// 计算额外伤害加成（跨版本兼容方法）
+    /// </summary>
+    public decimal GetRelentlessPursuitBonus(Creature? dealer, CardModel? cardSource)
     {
         if (cardSource == null || cardSource.Type != CardType.Attack)
         {

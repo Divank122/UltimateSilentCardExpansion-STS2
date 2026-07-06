@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using BaseLib.Utils;
 using Godot;
 using HarmonyLib;
 using MegaCrit.Sts2.Core.CardSelection;
@@ -104,12 +105,7 @@ public static class ExtinctCardPileCmdPatch
         cards = cards.Where(c => c != null);
     }
 
-    [HarmonyPatch(nameof(CardPileCmd.Add), [typeof(IEnumerable<CardModel>), typeof(CardPile), typeof(CardPilePosition), typeof(AbstractModel), typeof(bool)])]
-    [HarmonyPrefix]
-    public static void AddEnumerableCardPilePrefix(ref IEnumerable<CardModel> cards)
-    {
-        cards = cards.Where(c => c != null);
-    }
+
 }
 
 [HarmonyPatch(typeof(CardCmd))]
@@ -138,7 +134,7 @@ public static class ExtinctAdaptiveStrikePatch
     {
         if (cardPlay.Target == null) return;
         
-        await DamageCmd.Attack(instance.DynamicVars.Damage.BaseValue).FromCard(instance).Targeting(cardPlay.Target)
+        await DamageCmd.Attack(instance.DynamicVars.Damage.BaseValue).FromCardCompatibility(instance, cardPlay).Targeting(cardPlay.Target)
             .WithHitFx("vfx/vfx_attack_slash")
             .Execute(choiceContext);
         

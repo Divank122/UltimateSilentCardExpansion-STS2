@@ -57,7 +57,7 @@ public class Wuthering : SilentCardModel, ILocalizationProvider, IKineticCard
 
         SfxCmd.Play("event:/sfx/characters/silent/silent_dagger_spray");
         await DamageCmd.Attack(damage)
-            .FromCard(this)
+            .FromCardCompatibility(this, cardPlay)
             .TargetingAllOpponents(CombatState)
             .WithHitCount(hits)
             .WithAttackerFx(() => NDaggerSprayFlurryVfx.Create(Owner.Creature, new Godot.Color("#b1ccca"), goingRight: true))

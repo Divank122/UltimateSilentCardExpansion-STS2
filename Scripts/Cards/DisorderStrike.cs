@@ -62,7 +62,7 @@ public class DisorderStrike : SilentCardModel
 
         int damage = (int)DynamicVars.Damage.BaseValue;
 
-        await DamageCmd.Attack(damage).WithHitCount(2).FromCard(this).Targeting(cardPlay.Target)
+        await DamageCmd.Attack(damage).FromCardCompatibility(this, cardPlay).Targeting(cardPlay.Target).WithHitCount(2)
             .WithAttackerFx(() => NDaggerSprayFlurryVfx.Create(Owner.Creature, new Color("#b1ccca"), goingRight: true))
             .BeforeDamage(delegate
             {

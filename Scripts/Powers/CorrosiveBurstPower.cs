@@ -33,7 +33,7 @@ public class CorrosiveBurstPower : CustomPowerModel
         if (applier == Owner && amount > 0m && power is PoisonPower && power.Owner.Side != Owner.Side)
         {
             Flash();
-            await CreatureCmd.Damage(new ThrowingPlayerChoiceContext(), power.Owner, Amount, ValueProp.Unpowered, Owner, null);
+            await CreatureCmd.Damage(new ThrowingPlayerChoiceContext(), power.Owner, (int)Amount, ValueProp.Unpowered, Owner);
         }
     }
 }

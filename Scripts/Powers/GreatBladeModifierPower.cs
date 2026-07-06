@@ -16,12 +16,11 @@ public sealed class GreatBladeModifierPower : PowerModel
     public override PowerStackType StackType => PowerStackType.Single;
     protected override bool IsVisibleInternal => false;
 
-    public override decimal ModifyDamageMultiplicative(Creature? target, decimal amount, ValueProp props, Creature? dealer, CardModel? cardSource)
+    /// <summary>
+    /// 计算巨刀伤害倍率（跨版本兼容方法）
+    /// </summary>
+    public decimal GetGreatBladeMultiplier(Creature? dealer, CardModel? cardSource)
     {
-        if (!props.IsPoweredAttack())
-        {
-            return 1m;
-        }
         if (cardSource is not GreatBlade)
         {
             return 1m;

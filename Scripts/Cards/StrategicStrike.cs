@@ -41,7 +41,7 @@ public class StrategicStrike : SilentCardModel, ILocalizationProvider
     protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
     {
         await DamageCmd.Attack(DynamicVars.Damage.IntValue)
-            .FromCard(this)
+            .FromCardCompatibility(this, cardPlay)
             .TargetingAllOpponents(CombatState)
             .Execute(choiceContext);
 

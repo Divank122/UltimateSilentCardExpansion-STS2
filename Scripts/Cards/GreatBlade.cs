@@ -69,7 +69,7 @@ public sealed class GreatBlade : SilentCardModel
 
     protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
     {
-        var attackCommand = DamageCmd.Attack(DynamicVars.Damage.BaseValue).FromCard(this);
+        var attackCommand = DamageCmd.Attack(DynamicVars.Damage.BaseValue).FromCardCompatibility(this, cardPlay);
         if (HasFanOfKnives)
         {
             Creature lastEnemy = CombatState.HittableEnemies.LastOrDefault();

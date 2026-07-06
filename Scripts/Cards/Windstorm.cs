@@ -63,7 +63,7 @@ public class Windstorm : SilentCardModel, ILocalizationProvider
         }
         
         AttackCommand attackCommand = await DamageCmd.Attack(DynamicVars.Damage.BaseValue)
-            .FromCard(this)
+            .FromCardCompatibility(this, cardPlay)
             .Targeting(cardPlay.Target)
             .WithHitVfxNode(NGrandFinaleImpactVfx.Create)
             .WithHitFx(null, null, "blunt_attack.mp3")

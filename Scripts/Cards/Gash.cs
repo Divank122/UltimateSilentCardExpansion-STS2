@@ -48,7 +48,7 @@ public class Gash : SilentCardModel, ILocalizationProvider
     protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
     {
         int damage = (int)DynamicVars.Damage.BaseValue;
-        await DamageCmd.Attack(damage).FromCard(this).Targeting(cardPlay.Target!)
+        await DamageCmd.Attack(damage).FromCardCompatibility(this, cardPlay).Targeting(cardPlay.Target!)
             .WithHitFx("vfx/vfx_attack_slash")
             .Execute(choiceContext);
 
