@@ -18,6 +18,7 @@ using MegaCrit.Sts2.Core.Models.Cards;
 using MegaCrit.Sts2.Core.Models.Enchantments;
 using MegaCrit.Sts2.Core.Models.Powers;
 using MegaCrit.Sts2.Core.Models.Relics;
+using USCE.Scripts.Utils;
 using MegaCrit.Sts2.Core.Runs;
 
 namespace USCE.Scripts.Patches;
@@ -179,7 +180,8 @@ public static class ExtinctHistoryCoursePatch
         if (cardModel != null)
         {
             __instance.Flash();
-            __result = CardCmd.AutoPlay(choiceContext, cardModel.CreateDupe(), null);
+            var dupe = CardModelDupeHelper.CreateDupe(cardModel, __instance.Owner);
+            __result = CardCmd.AutoPlay(choiceContext, dupe, null);
         }
         else
         {

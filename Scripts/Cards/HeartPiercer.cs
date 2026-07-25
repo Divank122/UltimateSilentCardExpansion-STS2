@@ -12,6 +12,7 @@ using MegaCrit.Sts2.Core.Models.CardPools;
 using MegaCrit.Sts2.Core.Models.Cards;
 using MegaCrit.Sts2.Core.Models.Powers;
 using USCE.Scripts.Powers;
+using USCE.Scripts.Utils;
 
 namespace USCE.Scripts.Cards;
 
@@ -53,7 +54,7 @@ public class HeartPiercer : SilentCardModel, ILocalizationProvider
         int shivCount = DynamicVars["ShivCount"].IntValue;
         for (int i = 0; i < shivCount; i++)
         {
-            await Shiv.CreateInHand(Owner, CombatState!);
+            await ShivHelper.CreateInHand(Owner, CombatState!);
             await Cmd.Wait(0.1f);
         }
     }

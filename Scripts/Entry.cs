@@ -4,6 +4,7 @@ using Godot.Bridge;
 using HarmonyLib;
 using MegaCrit.Sts2.Core.Logging;
 using MegaCrit.Sts2.Core.Modding;
+using USCE.Scripts.Patches;
 
 namespace USCE.Scripts;
 
@@ -14,6 +15,8 @@ public class Entry
     {
         var harmony = new Harmony("sts2.usce");
         harmony.PatchAll();
+        ShivCreateInHandPatches.ApplyPatches(harmony);
+        GreatBladeDamagePatch.ApplyPatches(harmony);
         GD.Print("[USCE] Harmony patches applied");
 
         ScriptManagerBridge.LookupScriptsInAssembly(typeof(Entry).Assembly);

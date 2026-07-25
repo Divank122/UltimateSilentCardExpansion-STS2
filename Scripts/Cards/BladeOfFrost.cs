@@ -10,6 +10,7 @@ using MegaCrit.Sts2.Core.Localization;
 using MegaCrit.Sts2.Core.Localization.DynamicVars;
 using MegaCrit.Sts2.Core.Models.CardPools;
 using USCE.Scripts.Enchantments;
+using USCE.Scripts.Utils;
 
 namespace USCE.Scripts.Cards;
 
@@ -39,7 +40,7 @@ public class BladeOfFrost : SilentCardModel, ILocalizationProvider
 
     protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
     {
-        foreach (var shiv in await MegaCrit.Sts2.Core.Models.Cards.Shiv.CreateInHand(Owner, DynamicVars["Shivs"].IntValue, CombatState!))
+        foreach (var shiv in await ShivHelper.CreateInHand(Owner, DynamicVars["Shivs"].IntValue, CombatState!))
         {
             CardCmd.Enchant<Frosty>(shiv, 1m);
             if (IsUpgraded)

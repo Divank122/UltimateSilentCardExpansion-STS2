@@ -41,8 +41,7 @@ public static class ArchaicToothPatch
         }
         else if (candidates.Count > 1)
         {
-            var rng = new Rng((uint)player.RunState.Rng.Seed);
-            __result = rng.NextItem(candidates);
+            __result = player.RunState.Rng.UpFront.NextItem(candidates);
         }
 
         return false;

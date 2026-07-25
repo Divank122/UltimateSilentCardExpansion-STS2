@@ -1,5 +1,6 @@
 using System.Collections.Generic;
-using System.Diagnostics;
+using System.Linq;
+using System.Reflection;
 using System.Threading.Tasks;
 using Godot;
 using HarmonyLib;
@@ -8,175 +9,156 @@ using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Entities.Cards;
 using MegaCrit.Sts2.Core.Entities.Creatures;
 using MegaCrit.Sts2.Core.Entities.Players;
-using MegaCrit.Sts2.Core.Entities.Powers;
-using MegaCrit.Sts2.Core.GameActions.Multiplayer;
-using MegaCrit.Sts2.Core.Hooks;
 using MegaCrit.Sts2.Core.Models;
 using MegaCrit.Sts2.Core.Models.Cards;
-using MegaCrit.Sts2.Core.Nodes.CommonUi;
-using MegaCrit.Sts2.Core.Rooms;
 using USCE.Scripts.Cards;
 using USCE.Scripts.Powers;
 
 namespace USCE.Scripts.Patches;
 
-[HarmonyPatch(typeof(Shiv))]
 public static class ShivCreateInHandPatches
 {
-    private static bool _shouldSkipUpgrade = false;
-
-    public static bool ShouldSkipUpgrade => _shouldSkipUpgrade;
-
-    public static void ClearAll()
-    {
-        _shouldSkipUpgrade = false;
-    }
-
-    private static bool IsFromUpgradedSource()
-    {
-        var stackTrace = new StackTrace();
-        for (int i = 0; i < stackTrace.FrameCount; i++)
-        {
-            var method = stackTrace.GetFrame(i)?.GetMethod();
-            if (method != null)
-            {
-                var declaringType = method.DeclaringType;
-                if (declaringType == typeof(ReadyAndWaitingPowerPlus))
-                {
-                    return true;
-                }
-            }
-        }
-        return false;
-    }
-
     private static bool HasBladeMountain(Creature creature)
     {
-        return creature.GetPower<BladeMountainPower>() != null || creature.GetPower<BladeMountainPowerPlus>() != null;
+        return creature != null && (creature.GetPower<BladeMountainPower>() != null || creature.GetPower<BladeMountainPowerPlus>() != null);
     }
 
     private static bool HasBladeMountainPlus(Creature creature)
     {
-        return creature.GetPower<BladeMountainPowerPlus>() != null;
+        return creature != null && creature.GetPower<BladeMountainPowerPlus>() != null;
     }
 
-    [HarmonyPatch(nameof(Shiv.CreateInHand), typeof(Player), typeof(ICombatState))]
-    [HarmonyPrefix]
-    public static bool PrefixSingle(Player owner, ICombatState combatState, ref Task<CardModel?> __result)
+    public static void ApplyPatches(Harmony harmony)
     {
-        if (owner == null || combatState == null)
+        var flags = BindingFlags.Public | BindingFlags.Static;
+
+        // v0.107 signature (without creator parameter)
+        var createInHandSingle107 = typeof(Shiv).GetMethod("CreateInHand",
+            flags, null, [typeof(Player), typeof(ICombatState)], null);
+
+        if (createInHandSingle107 != null)
         {
-            _shouldSkipUpgrade = false;
+            var prefixSingle107 = typeof(ShivCreateInHandPatches).GetMethod("PrefixSingleV107",
+                BindingFlags.Public | BindingFlags.Static);
+            harmony.Patch(createInHandSingle107, new HarmonyMethod(prefixSingle107));
+            GD.Print("[BladeMountain] Patched Shiv.CreateInHand (v107 single)");
+        }
+
+        var createInHandMultiple107 = typeof(Shiv).GetMethod("CreateInHand",
+            flags, null, [typeof(Player), typeof(int), typeof(ICombatState)], null);
+
+        if (createInHandMultiple107 != null)
+        {
+            var prefixMultiple107 = typeof(ShivCreateInHandPatches).GetMethod("PrefixMultipleV107",
+                BindingFlags.Public | BindingFlags.Static);
+            harmony.Patch(createInHandMultiple107, new HarmonyMethod(prefixMultiple107));
+            GD.Print("[BladeMountain] Patched Shiv.CreateInHand (v107 multiple)");
+        }
+
+        // v0.109 signature (with creator parameter)
+        var createInHandSingle109 = typeof(Shiv).GetMethod("CreateInHand",
+            flags, null, [typeof(Player), typeof(ICombatState), typeof(Player)], null);
+
+        if (createInHandSingle109 != null)
+        {
+            var prefixSingle109 = typeof(ShivCreateInHandPatches).GetMethod("PrefixSingleV109",
+                BindingFlags.Public | BindingFlags.Static);
+            harmony.Patch(createInHandSingle109, new HarmonyMethod(prefixSingle109));
+            GD.Print("[BladeMountain] Patched Shiv.CreateInHand (v109 single)");
+        }
+
+        var createInHandMultiple109 = typeof(Shiv).GetMethod("CreateInHand",
+            flags, null, [typeof(Player), typeof(int), typeof(ICombatState), typeof(Player)], null);
+
+        if (createInHandMultiple109 != null)
+        {
+            var prefixMultiple109 = typeof(ShivCreateInHandPatches).GetMethod("PrefixMultipleV109",
+                BindingFlags.Public | BindingFlags.Static);
+            harmony.Patch(createInHandMultiple109, new HarmonyMethod(prefixMultiple109));
+            GD.Print("[BladeMountain] Patched Shiv.CreateInHand (v109 multiple)");
+        }
+    }
+
+    // v0.107 signature (without creator parameter)
+    public static bool PrefixSingleV107(Player owner, ICombatState combatState, ref Task<CardModel?> __result)
+    {
+        if (owner?.Creature == null || !HasBladeMountain(owner.Creature))
+        {
             return true;
         }
 
-        if (!HasBladeMountain(owner.Creature))
-        {
-            _shouldSkipUpgrade = false;
-            return true;
-        }
-
-        bool fromUpgradedSource = IsFromUpgradedSource();
-
-        if (fromUpgradedSource)
-        {
-            _shouldSkipUpgrade = true;
-        }
-        else
-        {
-            _shouldSkipUpgrade = false;
-        }
-
-        __result = CreateGreatBlade(owner, combatState);
+        GD.Print("[BladeMountain] Replacing single Shiv with GreatBlade (v107)");
+        __result = CreateGreatBladeSingle(owner, combatState);
         return false;
     }
 
-    [HarmonyPatch(nameof(Shiv.CreateInHand), typeof(Player), typeof(int), typeof(ICombatState))]
-    [HarmonyPrefix]
-    public static bool PrefixMultiple(Player owner, int count, ICombatState combatState, ref Task<IEnumerable<CardModel>> __result)
+    // v0.109 signature (with optional creator parameter)
+    public static bool PrefixSingleV109(Player owner, ICombatState combatState, Player? creator, ref Task<CardModel?> __result)
     {
-        if (owner == null || combatState == null)
+        if (owner?.Creature == null || !HasBladeMountain(owner.Creature))
         {
-            _shouldSkipUpgrade = false;
             return true;
         }
 
-        if (!HasBladeMountain(owner.Creature))
+        GD.Print("[BladeMountain] Replacing single Shiv with GreatBlade (v109)");
+        __result = CreateGreatBladeSingle(owner, combatState);
+        return false;
+    }
+
+    // v0.107 signature (without creator parameter)
+    public static bool PrefixMultipleV107(Player owner, int count, ICombatState combatState, ref Task<IEnumerable<CardModel>> __result)
+    {
+        if (owner?.Creature == null || !HasBladeMountain(owner.Creature))
         {
-            _shouldSkipUpgrade = false;
             return true;
         }
 
-        bool fromUpgradedSource = IsFromUpgradedSource();
-
-        if (fromUpgradedSource)
-        {
-            _shouldSkipUpgrade = true;
-        }
-        else
-        {
-            _shouldSkipUpgrade = false;
-        }
-
+        GD.Print($"[BladeMountain] Replacing {count} Shivs with GreatBlades (v107)");
         __result = CreateGreatBlades(owner, count, combatState);
         return false;
     }
 
-    private static async Task<CardModel?> CreateGreatBlade(Player owner, ICombatState combatState)
+    // v0.109 signature (with optional creator parameter)
+    public static bool PrefixMultipleV109(Player owner, int count, ICombatState combatState, Player? creator, ref Task<IEnumerable<CardModel>> __result)
     {
-        if (HasBladeMountainPlus(owner.Creature))
+        if (owner?.Creature == null || !HasBladeMountain(owner.Creature))
         {
-            var blade = await GreatBlade.CreateInHand(owner, combatState);
-            if (blade != null)
-            {
-                blade.UpgradeInternal();
-                blade.FinalizeUpgradeInternal();
-            }
-            return blade;
+            return true;
         }
-        return await GreatBlade.CreateInHand(owner, combatState);
+
+        GD.Print($"[BladeMountain] Replacing {count} Shivs with GreatBlades (v109)");
+        __result = CreateGreatBlades(owner, count, combatState);
+        return false;
+    }
+
+    private static async Task<CardModel?> CreateGreatBladeSingle(Player owner, ICombatState combatState)
+    {
+        var blades = await CreateGreatBlades(owner, 1, combatState);
+        return blades.FirstOrDefault();
     }
 
     private static async Task<IEnumerable<CardModel>> CreateGreatBlades(Player owner, int count, ICombatState combatState)
     {
-        List<CardModel> result = new List<CardModel>();
+        if (count == 0)
+        {
+            return System.Array.Empty<CardModel>();
+        }
+
         bool upgradeBlades = HasBladeMountainPlus(owner.Creature);
 
+        List<CardModel> blades = new List<CardModel>();
         for (int i = 0; i < count; i++)
         {
-            var blade = await GreatBlade.CreateInHand(owner, combatState);
-            if (blade != null)
+            var blade = combatState.CreateCard<GreatBlade>(owner);
+            if (upgradeBlades)
             {
-                if (upgradeBlades)
-                {
-                    blade.UpgradeInternal();
-                    blade.FinalizeUpgradeInternal();
-                }
-                result.Add(blade);
+                blade.UpgradeInternal();
+                blade.FinalizeUpgradeInternal();
             }
+            blades.Add(blade);
         }
 
-        return result;
+        await CardPileCmd.AddGeneratedCardsToCombat(blades, PileType.Hand, owner);
+        return blades;
     }
 }
-
-[HarmonyPatch(typeof(CardCmd), "Upgrade", typeof(IEnumerable<CardModel>), typeof(CardPreviewStyle))]
-public static class CardCmdUpgradePatch
-{
-    [HarmonyPrefix]
-    public static bool UpgradePrefix(IEnumerable<CardModel> cards)
-    {
-        if (ShivCreateInHandPatches.ShouldSkipUpgrade)
-        {
-            foreach (var card in cards)
-            {
-                if (card is GreatBlade)
-                {
-                    return false;
-                }
-            }
-        }
-        return true;
-    }
-}
-

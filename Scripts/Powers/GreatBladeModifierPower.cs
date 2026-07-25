@@ -1,4 +1,5 @@
 using System.Linq;
+using Godot;
 using MegaCrit.Sts2.Core.Entities.Cards;
 using MegaCrit.Sts2.Core.Entities.Creatures;
 using MegaCrit.Sts2.Core.Entities.Players;
@@ -17,7 +18,7 @@ public sealed class GreatBladeModifierPower : PowerModel
     protected override bool IsVisibleInternal => false;
 
     /// <summary>
-    /// 计算巨刀伤害倍率（跨版本兼容方法）
+    /// 计算巨刀伤害倍率
     /// </summary>
     public decimal GetGreatBladeMultiplier(Creature? dealer, CardModel? cardSource)
     {
@@ -43,6 +44,7 @@ public sealed class GreatBladeModifierPower : PowerModel
 
         if (shivCount <= 1)
         {
+            GD.Print($"[GreatBladeModifier] shivCount={shivCount}, no reduction");
             return 1m;
         }
 
@@ -53,6 +55,7 @@ public sealed class GreatBladeModifierPower : PowerModel
             multiplier /= 2m;
         }
 
+        GD.Print($"[GreatBladeModifier] shivCount={shivCount}, halvingTimes={halvingTimes}, multiplier={multiplier}");
         return multiplier;
     }
 }
