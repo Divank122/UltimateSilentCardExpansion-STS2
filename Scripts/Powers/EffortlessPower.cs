@@ -8,6 +8,7 @@ using MegaCrit.Sts2.Core.GameActions.Multiplayer;
 using MegaCrit.Sts2.Core.HoverTips;
 using MegaCrit.Sts2.Core.Localization;
 using MegaCrit.Sts2.Core.Models;
+using USCE.Scripts.Utils;
 
 namespace USCE.Scripts.Powers;
 
@@ -44,7 +45,7 @@ public class EffortlessPower : CustomPowerModel
         Flash();
 
         int shivsToAdd = (int)Amount;
-        await MegaCrit.Sts2.Core.Models.Cards.Shiv.CreateInHand(Owner.Player!, shivsToAdd, CombatState);
+        await ShivHelper.CreateInHand(Owner.Player!, shivsToAdd, CombatState);
     }
 }
 
@@ -81,7 +82,7 @@ public class EffortlessPowerPlus : CustomPowerModel
         Flash();
 
         int shivsToAdd = (int)Amount;
-        var shivs = await MegaCrit.Sts2.Core.Models.Cards.Shiv.CreateInHand(Owner.Player!, shivsToAdd, CombatState);
+        var shivs = await ShivHelper.CreateInHand(Owner.Player!, shivsToAdd, CombatState);
         foreach (var shiv in shivs)
         {
             CardCmd.Upgrade(shiv);

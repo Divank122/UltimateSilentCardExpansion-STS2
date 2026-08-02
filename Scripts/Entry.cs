@@ -16,7 +16,7 @@ public class Entry
         var harmony = new Harmony("sts2.usce");
         harmony.PatchAll();
         ShivCreateInHandPatches.ApplyPatches(harmony);
-        GreatBladeDamagePatch.ApplyPatches(harmony);
+        DamageMultiplicativePatch.ApplyPatches(harmony);
         GD.Print("[USCE] Harmony patches applied");
 
         ScriptManagerBridge.LookupScriptsInAssembly(typeof(Entry).Assembly);
