@@ -13,6 +13,12 @@ build/
 *.exe
 *.pck
 
+# Except output directory
+!output/
+!output/*.dll
+!output/*.pck
+!output/*.json
+
 # IDE
 .vs/
 .vscode/
