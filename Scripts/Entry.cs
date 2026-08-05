@@ -2,8 +2,11 @@ using BaseLib.Patches.Localization;
 using Godot;
 using Godot.Bridge;
 using HarmonyLib;
+using MegaCrit.Sts2.Core.Entities.Cards;
+using MegaCrit.Sts2.Core.Entities.Creatures;
 using MegaCrit.Sts2.Core.Logging;
 using MegaCrit.Sts2.Core.Modding;
+using MegaCrit.Sts2.Core.Models;
 using USCE.Scripts.Patches;
 
 namespace USCE.Scripts;
@@ -17,6 +20,7 @@ public class Entry
         harmony.PatchAll();
         ShivCreateInHandPatches.ApplyPatches(harmony);
         DamageMultiplicativePatch.ApplyPatches(harmony);
+        CardModelPatch.ApplyPatch(harmony);
         GD.Print("[USCE] Harmony patches applied");
 
         ScriptManagerBridge.LookupScriptsInAssembly(typeof(Entry).Assembly);

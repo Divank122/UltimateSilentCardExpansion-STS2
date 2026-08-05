@@ -26,8 +26,8 @@ public class Synthesize : SilentCardModel, ILocalizationProvider
 
     public override List<(string, string)>? Localization => LocManager.Instance.Language switch
     {
-        "zhs" => new CardLoc("化合", "选择你[gold]手牌[/gold]中的一张攻击牌，将其变为耗能X以打出X次。"),
-        _ => new CardLoc("Synthesize", "Choose an Attack in your [gold]Hand[/gold]. It costs X and is played X times.")
+        "zhs" => new CardLoc("化合", "选择你[gold]手牌[/gold]中的一张牌，将其变为耗能X以打出X次。"),
+        _ => new CardLoc("Synthesize", "Choose a card in your [gold]Hand[/gold]. It costs X and is played X times.")
     };
 
     public Synthesize() : base(energyCost, type, rarity, targetType)
@@ -40,9 +40,7 @@ public class Synthesize : SilentCardModel, ILocalizationProvider
         
         var result = await CardSelectCmd.FromHand(choiceContext, Owner, prefs, (CardModel c) => 
         {
-            bool isAttack = c.Type == CardType.Attack;
-            bool isPlayable = !c.Keywords.Contains(CardKeyword.Unplayable);
-            return isAttack && isPlayable;
+            return !c.Keywords.Contains(CardKeyword.Unplayable);
         }, this);
         
         CardModel? card = result.FirstOrDefault();
