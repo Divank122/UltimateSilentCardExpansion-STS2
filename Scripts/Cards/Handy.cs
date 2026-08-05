@@ -23,7 +23,7 @@ public class Handy : SilentCardModel, ILocalizationProvider
 
     protected override IEnumerable<DynamicVar> CanonicalVars =>
     [
-        new CardsVar(2)
+        new CardsVar(3)
     ];
 
     public override List<(string, string)>? Localization => LocManager.Instance.Language switch
