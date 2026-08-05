@@ -21,7 +21,7 @@ public class GustStep : SilentCardModel, ILocalizationProvider
 
     protected override IEnumerable<DynamicVar> CanonicalVars =>
     [
-        new CardsVar(3)
+        new CardsVar(4)
     ];
 
     public override List<(string, string)>? Localization => LocManager.Instance.Language switch
