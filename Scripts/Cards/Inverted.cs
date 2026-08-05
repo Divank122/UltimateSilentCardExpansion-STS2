@@ -20,7 +20,7 @@ namespace USCE.Scripts.Cards;
 [Pool(typeof(SilentCardPool))]
 public class Inverted : SilentCardModel, ILocalizationProvider
 {
-    private const int energyCost = 2;
+    private const int energyCost = 1;
     private const CardType type = CardType.Skill;
     private const CardRarity rarity = CardRarity.Uncommon;
 
@@ -30,7 +30,7 @@ public class Inverted : SilentCardModel, ILocalizationProvider
 
     protected override IEnumerable<DynamicVar> CanonicalVars =>
     [
-        new BlockVar(10m, ValueProp.Move)
+        new BlockVar(6m, ValueProp.Move)
     ];
 
     protected override IEnumerable<IHoverTip> ExtraHoverTips =>
@@ -47,6 +47,8 @@ public class Inverted : SilentCardModel, ILocalizationProvider
     public Inverted() : base(energyCost, type, rarity, TargetType.Self)
     {
     }
+
+    public override IEnumerable<CardKeyword> CanonicalKeywords => [CardKeyword.Exhaust];
 
     protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
     {
@@ -68,7 +70,7 @@ public class Inverted : SilentCardModel, ILocalizationProvider
 
     protected override void OnUpgrade()
     {
-        DynamicVars.Block.UpgradeValueBy(4m);
+        DynamicVars.Block.UpgradeValueBy(3m);
     }
 
     public override async Task BeforeCombatStart()
