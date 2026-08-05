@@ -7,6 +7,7 @@ using MegaCrit.Sts2.Core.Entities.Powers;
 using MegaCrit.Sts2.Core.GameActions.Multiplayer;
 using MegaCrit.Sts2.Core.Localization;
 using MegaCrit.Sts2.Core.Models;
+using MegaCrit.Sts2.Core.Models.Powers;
 
 namespace USCE.Scripts.Powers;
 
@@ -26,31 +27,9 @@ public class FreePoisonPower : CustomPowerModel
 
     private static bool IsPoisonRelatedCard(CardModel card)
     {
-        return card switch
-        {
-            MegaCrit.Sts2.Core.Models.Cards.PoisonedStab => true,
-            MegaCrit.Sts2.Core.Models.Cards.DeadlyPoison => true,
-            MegaCrit.Sts2.Core.Models.Cards.Snakebite => true,
-            MegaCrit.Sts2.Core.Models.Cards.BubbleBubble => true,
-            MegaCrit.Sts2.Core.Models.Cards.Mirage => true,
-            MegaCrit.Sts2.Core.Models.Cards.BouncingFlask => true,
-            MegaCrit.Sts2.Core.Models.Cards.Haze => true,
-            MegaCrit.Sts2.Core.Models.Cards.NoxiousFumes => true,
-            MegaCrit.Sts2.Core.Models.Cards.Outbreak => true,
-            MegaCrit.Sts2.Core.Models.Cards.CorrosiveWave => true,
-            MegaCrit.Sts2.Core.Models.Cards.Accelerant => true,
-            MegaCrit.Sts2.Core.Models.Cards.Envenom => true,
-            Cards.AcuteCorrosion => true,
-            Cards.Clot => true,
-            Cards.Bane => true,
-            Cards.ConfusingImpact => true,
-            Cards.Flay => true,
-            Cards.Amulet => true,
-            Cards.Squirm => true,
-            Cards.HeartPiercer => true,
-            Cards.Meltforge => true,
-            _ => false
-        };
+        // 直接检查卡牌描述的原始文本，避免生成HoverTips导致递归（HoverTips→描述→能量图标→查费用→HoverTips）
+        string rawText = card.Description.GetRawText();
+        return rawText.Contains("中毒") || rawText.Contains("Poison");
     }
 
     public override bool TryModifyEnergyCostInCombat(CardModel card, decimal originalCost, out decimal modifiedCost)
