@@ -30,8 +30,8 @@ public class StrategicStrike : SilentCardModel, ILocalizationProvider
 
     public override List<(string, string)>? Localization => LocManager.Instance.Language switch
     {
-        "zhs" => new CardLoc("策略打击", "对所有敌人造成{Damage:diff()}点伤害。\n丢弃所有技能牌。"),
-        _ => new CardLoc("Strategic Strike", "Deal {Damage:diff()} damage to ALL enemies.\nDiscard all Skills.")
+        "zhs" => new CardLoc("策略打击", "对所有敌人造成{Damage:diff()}点伤害。\n丢弃所有非[gold]攻击[/gold]牌。"),
+        _ => new CardLoc("Strategic Strike", "Deal {Damage:diff()} damage to ALL enemies.\nDiscard all non-[gold]Attack[/gold] cards.")
     };
 
     public StrategicStrike() : base(energyCost, type, rarity, targetType)
@@ -45,9 +45,9 @@ public class StrategicStrike : SilentCardModel, ILocalizationProvider
             .TargetingAllOpponents(CombatState)
             .Execute(choiceContext);
 
-        var skillCards = PileType.Hand.GetPile(Owner).Cards
-            .Where(c => c.Type == CardType.Skill && c != this);
-        await CardCmd.Discard(choiceContext, skillCards);
+        var nonAttackCards = PileType.Hand.GetPile(Owner).Cards
+            .Where(c => c.Type != CardType.Attack && c != this);
+        await CardCmd.Discard(choiceContext, nonAttackCards);
     }
 
     protected override void OnUpgrade()
