@@ -16,7 +16,7 @@ public class RelentlessPursuit : SilentCardModel, ILocalizationProvider
 {
     private const int energyCost = 2;
     private const CardType type = CardType.Power;
-    private const CardRarity rarity = CardRarity.Uncommon;
+    private const CardRarity rarity = CardRarity.Rare;
     private const TargetType targetType = TargetType.Self;
 
     public override List<(string, string)>? Localization => LocManager.Instance.Language switch
