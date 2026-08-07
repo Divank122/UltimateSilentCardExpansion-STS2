@@ -1,9 +1,9 @@
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using BaseLib.Abstracts;
 using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Commands.Builders;
-using MegaCrit.Sts2.Core.Entities.Cards;
 using MegaCrit.Sts2.Core.Entities.Creatures;
 using MegaCrit.Sts2.Core.Entities.Powers;
 using MegaCrit.Sts2.Core.GameActions.Multiplayer;
@@ -24,8 +24,8 @@ public class HeartPiercerPower : CustomPowerModel
 
     public override List<(string, string)>? Localization => LocManager.Instance.Language switch
     {
-        "zhs" => new PowerLoc("钻心", "小刀额外给予1层中毒。", "小刀额外给予[blue]{Amount}[/blue]层[gold]中毒[/gold]。"),
-        _ => new PowerLoc("Heart Piercer", "Shivs deal additional 1 Poison.", "Shivs deal additional [blue]{Amount}[/blue] [gold]Poison[/gold].")
+        "zhs" => new PowerLoc("钻心", "每当你攻击敌人时，触发其拥有的[gold]中毒[/gold]。", "每当你攻击敌人时，触发其拥有的[gold]中毒[/gold]。"),
+        _ => new PowerLoc("Heart Piercer", "Whenever you attack an enemy, trigger their [gold]Poison[/gold].", "Whenever you attack an enemy, trigger their [gold]Poison[/gold].")
     };
 
     public override async Task AfterAttack(PlayerChoiceContext choiceContext, AttackCommand command)
@@ -35,23 +35,21 @@ public class HeartPiercerPower : CustomPowerModel
             return;
         }
 
-        if (!command.DamageProps.IsPoweredAttack())
+        foreach (var resultList in command.Results)
         {
-            return;
-        }
-
-        if (command.ModelSource is not CardModel card || !card.Tags.Contains(CardTag.Shiv))
-        {
-            return;
-        }
-
-        foreach (List<DamageResult> resultList in command.Results)
-        {
-            foreach (DamageResult result in resultList)
+            foreach (var result in resultList)
             {
                 if (result.TotalDamage > 0 && !result.Receiver.IsDead)
                 {
-                    await PowerCmd.Apply<PoisonPower>(choiceContext, result.Receiver, Amount, Owner, null);
+                    var poison = result.Receiver.GetPower<PoisonPower>();
+                    if (poison != null && poison.Amount > 0)
+                    {
+                        await CreatureCmd.Damage(choiceContext, new List<Creature> { result.Receiver }, poison.Amount, ValueProp.Unblockable | ValueProp.Unpowered, Owner);
+                        if (result.Receiver.IsAlive)
+                        {
+                            await PowerCmd.Decrement(poison);
+                        }
+                    }
                 }
             }
         }
