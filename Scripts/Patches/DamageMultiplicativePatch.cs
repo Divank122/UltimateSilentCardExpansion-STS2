@@ -5,7 +5,6 @@ using MegaCrit.Sts2.Core.Entities.Cards;
 using MegaCrit.Sts2.Core.Entities.Creatures;
 using MegaCrit.Sts2.Core.Hooks;
 using MegaCrit.Sts2.Core.Models;
-using MegaCrit.Sts2.Core.Models.Cards;
 using MegaCrit.Sts2.Core.ValueProps;
 using USCE.Scripts.Cards;
 using USCE.Scripts.Powers;
@@ -15,7 +14,7 @@ namespace USCE.Scripts.Patches;
 /// <summary>
 /// 跨版本兼容的伤害修改Patch
 /// 使用Harmony Prefix拦截ModifyDamageMultiplicative调用
-/// 处理GreatBladeModifierPower和RelentlessPursuitPower
+/// 处理GreatBladeModifierPower
 /// </summary>
 public static class DamageMultiplicativePatch
 {
@@ -75,12 +74,6 @@ public static class DamageMultiplicativePatch
             return HandleGreatBlade(greatBladePower, dealer, cardSource, amount, ref __result);
         }
 
-        // 处理RelentlessPursuitPower
-        if (__instance is RelentlessPursuitPower relentlessPower)
-        {
-            return HandleRelentlessPursuit(relentlessPower, dealer, cardSource, amount, ref __result);
-        }
-
         return true; // 继续执行原始方法
     }
 
@@ -107,57 +100,5 @@ public static class DamageMultiplicativePatch
         GD.Print($"[GreatBladeModifier] Applying multiplier: {multiplier} (amount {amount} -> {amount * multiplier})");
 
         return false; // 跳过原始方法
-    }
-
-    private static bool HandleRelentlessPursuit(RelentlessPursuitPower power, Creature? dealer, CardModel? cardSource, decimal amount, ref decimal __result)
-    {
-        // [DEBUG]
-        GD.Print($"[RelentlessPursuit] ModifyDamageMultiplicative called: dealer={dealer?.Name ?? "null"}, cardSource={cardSource?.GetType().Name ?? "null"}, amount={amount}");
-
-        // 只处理攻击者的伤害
-        if (dealer != power.Owner)
-        {
-            return true;
-        }
-
-        // 只处理攻击牌
-        if (cardSource?.Type != CardType.Attack)
-        {
-            return true;
-        }
-
-        // 计算额外伤害加成
-        var bonus = power.GetRelentlessPursuitBonus(dealer, cardSource);
-        if (bonus > 0)
-        {
-            // 额外伤害是加法，返回amount + bonus
-            // 但ModifyDamageMultiplicative返回的是倍率
-            // 所以需要返回 (amount + bonus) / amount = 1 + bonus/amount
-            // 但如果amount为0，需要特殊处理
-            
-            // 实际上，根据游戏设计，额外伤害应该是直接加到amount上
-            // 但由于这个方法返回的是"倍率"（multiplicative），我们需要转换
-            
-            // 简单的解决方案：返回 amount + bonus
-            // 但这个方法名是"Multiplicative"，所以可能需要重新理解
-            
-            // 查看游戏的DoubleDamagePower等Power的实现：
-            // DoubleDamagePower返回2.0m（倍率）
-            // 所以额外伤害加成应该返回 (amount + bonus) / amount
-            
-            if (amount == 0)
-            {
-                __result = 1m;
-            }
-            else
-            {
-                __result = (amount + bonus) / amount;
-            }
-            
-            GD.Print($"[RelentlessPursuit] Applying bonus: +{bonus} (amount {amount} -> {amount + bonus})");
-            return false;
-        }
-
-        return true;
     }
 }
