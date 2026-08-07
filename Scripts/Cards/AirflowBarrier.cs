@@ -17,18 +17,18 @@ namespace USCE.Scripts.Cards;
 [Pool(typeof(SilentCardPool))]
 public class AirflowBarrier : SilentCardModel, ILocalizationProvider
 {
-    private const int energyCost = 2;
+    private const int energyCost = 1;
 
-    public override IEnumerable<CardKeyword> CanonicalKeywords => new CardKeyword[] { CardKeyword.Sly };
+    public override IEnumerable<CardKeyword> CanonicalKeywords => new CardKeyword[] { CardKeyword.Innate };
 
     protected override IEnumerable<IHoverTip> ExtraHoverTips => new IHoverTip[]
     {
-        HoverTipFactory.Static(StaticHoverTip.Block)
+        HoverTipFactory.FromPower<DexterityPower>()
     };
 
     protected override IEnumerable<DynamicVar> CanonicalVars => new DynamicVar[]
     {
-        new PowerVar<AirflowBarrierPower>("BlockAmount", 6m)
+        new PowerVar<AirflowBarrierPower>("Dexterity", 1m)
     };
 
     public AirflowBarrier()
@@ -39,17 +39,17 @@ public class AirflowBarrier : SilentCardModel, ILocalizationProvider
     protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
     {
         await CreatureCmd.TriggerAnim(Owner.Creature, "Cast", Owner.Character.CastAnimDelay);
-        await PowerCmd.Apply<AirflowBarrierPower>(choiceContext, Owner.Creature, DynamicVars["BlockAmount"].BaseValue, Owner.Creature, this);
+        await PowerCmd.Apply<AirflowBarrierPower>(choiceContext, Owner.Creature, DynamicVars["Dexterity"].BaseValue, Owner.Creature, this);
     }
 
     protected override void OnUpgrade()
     {
-        DynamicVars["BlockAmount"].UpgradeValueBy(2m);
+        EnergyCost.UpgradeBy(-1);
     }
 
     public override List<(string, string)>? Localization => LocManager.Instance.Language switch
     {
-        "zhs" => new CardLoc("气流屏障", "每回合第一次弃牌时，获得{BlockAmount:diff()}点[gold]格挡[/gold]。"),
-        _ => new CardLoc("Airflow Barrier", "Gain {BlockAmount:diff()} [gold]Block[/gold] the first time you discard each turn.")
+        "zhs" => new CardLoc("气流屏障", "每当你从卡牌中获得[gold]格挡[/gold]4次，获得{Dexterity}点[gold]敏捷[/gold]。"),
+        _ => new CardLoc("Airflow Barrier", "Whenever you gain [gold]Block[/gold] from a card 4 times, gain {Dexterity} [gold]Dexterity[/gold].")
     };
 }
