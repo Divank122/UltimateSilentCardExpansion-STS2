@@ -16,18 +16,21 @@ namespace USCE.Scripts.Cards;
 [Pool(typeof(SilentCardPool))]
 public class Dance : SilentCardModel, ILocalizationProvider
 {
+    public override IEnumerable<CardKeyword> CanonicalKeywords => new CardKeyword[] { CardKeyword.Sly };
+
     protected override IEnumerable<DynamicVar> CanonicalVars =>
     [
-        new EnergyVar(1)
+        new PowerVar<DancePower>("BlockAmount", 4m)
     ];
 
     protected override IEnumerable<IHoverTip> ExtraHoverTips =>
     [
-        EnergyHoverTip
+        EnergyHoverTip,
+        HoverTipFactory.Static(StaticHoverTip.Block)
     ];
 
     public Dance()
-        : base(2, CardType.Power, CardRarity.Rare, TargetType.Self)
+        : base(3, CardType.Power, CardRarity.Rare, TargetType.Self)
     {
     }
 
@@ -39,12 +42,12 @@ public class Dance : SilentCardModel, ILocalizationProvider
 
     protected override void OnUpgrade()
     {
-        EnergyCost.UpgradeBy(-1);
+        DynamicVars["BlockAmount"].UpgradeValueBy(2m);
     }
 
     public override List<(string, string)>? Localization => LocManager.Instance.Language switch
     {
-        "zhs" => new CardLoc("起舞", "每回合第一次弃牌时，获得{energyPrefix:energyIcons(1)}。"),
-        _ => new CardLoc("Dance", "Gain {energyPrefix:energyIcons(1)} the first time you discard each turn.")
+        "zhs" => new CardLoc("起舞", "每回合第一次弃牌时，获得{energyPrefix:energyIcons(1)}和{BlockAmount:diff()}点[gold]格挡[/gold]。"),
+        _ => new CardLoc("Dance", "Gain {energyPrefix:energyIcons(1)} and {BlockAmount:diff()} [gold]Block[/gold] the first time you discard each turn.")
     };
 }
