@@ -29,6 +29,8 @@ public class Windstorm : SilentCardModel, ILocalizationProvider
     private const CardRarity rarity = CardRarity.Rare;
     private const TargetType targetType = TargetType.AnyEnemy;
 
+    public override bool CanBeGeneratedInCombat => false;
+
     protected override IEnumerable<DynamicVar> CanonicalVars =>
     [
         new DamageVar(99m, ValueProp.Move)

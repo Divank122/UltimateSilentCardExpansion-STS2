@@ -28,6 +28,8 @@ public class Bane : SilentCardModel, ILocalizationProvider
         new PowerVar<BanePower>("BanePower", 1m)
     ];
 
+    public override IEnumerable<CardKeyword> CanonicalKeywords => new CardKeyword[] { CardKeyword.Ethereal };
+
     protected override IEnumerable<IHoverTip> ExtraHoverTips =>
     [
         HoverTipFactory.FromPower<IntangiblePower>()
