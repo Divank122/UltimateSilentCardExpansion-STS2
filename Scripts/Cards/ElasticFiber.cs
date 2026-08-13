@@ -21,7 +21,8 @@ public class ElasticFiber : SilentCardModel, ILocalizationProvider
 
     protected override IEnumerable<DynamicVar> CanonicalVars => new DynamicVar[]
     {
-        new PowerVar<ElasticFiberPower>("Plating", 1m)
+        new PowerVar<ElasticFiberPower>("Plating", 1m),
+        new IntVar("OnUpgradePlating", 0m)
     };
 
     protected override IEnumerable<IHoverTip> ExtraHoverTips => new IHoverTip[]
@@ -38,16 +39,20 @@ public class ElasticFiber : SilentCardModel, ILocalizationProvider
     {
         await CreatureCmd.TriggerAnim(Owner.Creature, "Cast", Owner.Character.CastAnimDelay);
         await PowerCmd.Apply<ElasticFiberPower>(choiceContext, Owner.Creature, DynamicVars["Plating"].BaseValue, Owner.Creature, this);
+        if (DynamicVars["OnUpgradePlating"].BaseValue > 0)
+        {
+            await PowerCmd.Apply<PlatingPower>(choiceContext, Owner.Creature, DynamicVars["OnUpgradePlating"].BaseValue, Owner.Creature, this);
+        }
     }
 
     protected override void OnUpgrade()
     {
-        DynamicVars["Plating"].UpgradeValueBy(1m);
+        DynamicVars["OnUpgradePlating"].UpgradeValueBy(2m);
     }
 
     public override List<(string, string)>? Localization => LocManager.Instance.Language switch
     {
-        "zhs" => new CardLoc("弹性纤维", "每获得6点[gold]格挡[/gold]，获得{Plating:diff()}层[gold]覆甲[/gold]。"),
-        _ => new CardLoc("Elastic Fiber", "Whenever you gain 6 [gold]Block[/gold], gain {Plating:diff()} [gold]Plating[/gold].")
+        "zhs" => new CardLoc("弹性纤维", "每获得8点[gold]格挡[/gold]，获得{Plating:diff()}层[gold]覆甲[/gold]。\n{OnUpgradePlating:cond:>0?获得{OnUpgradePlating:diff()}层[gold]覆甲[/gold]。|}"),
+        _ => new CardLoc("Elastic Fiber", "Whenever you gain 8 [gold]Block[/gold], gain {Plating:diff()} [gold]Plating[/gold].\n{OnUpgradePlating:cond:>0?Gain {OnUpgradePlating:diff()} [gold]Plating[/gold].|}")
     };
 }

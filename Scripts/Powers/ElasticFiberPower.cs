@@ -19,7 +19,7 @@ public class ElasticFiberPower : CustomPowerModel
         public int TriggerCount;
     }
 
-    private const decimal BlockThreshold = 6m;
+    private const decimal BlockThreshold = 8m;
 
     public override PowerType Type => PowerType.Buff;
     public override PowerStackType StackType => PowerStackType.Counter;
@@ -56,7 +56,7 @@ public class ElasticFiberPower : CustomPowerModel
 
     public override List<(string, string)>? Localization => LocManager.Instance.Language switch
     {
-        "zhs" => new PowerLoc("弹性纤维", "每获得6点[gold]格挡[/gold]，获得[blue]{Amount}[/blue]层[gold]覆甲[/gold]。", "每获得6点[gold]格挡[/gold]，获得[blue]{Amount}[/blue]层[gold]覆甲[/gold]。"),
-        _ => new PowerLoc("Elastic Fiber", "Whenever you gain 6 [gold]Block[/gold], gain [blue]{Amount}[/blue] [gold]Plating[/gold].", "Whenever you gain 6 [gold]Block[/gold], gain [blue]{Amount}[/blue] [gold]Plating[/gold].")
+        "zhs" => new PowerLoc("弹性纤维", "每获得8点[gold]格挡[/gold]，获得[blue]{Amount}[/blue]层[gold]覆甲[/gold]。", "每获得8点[gold]格挡[/gold]，获得[blue]{Amount}[/blue]层[gold]覆甲[/gold]。"),
+        _ => new PowerLoc("Elastic Fiber", "Whenever you gain 8 [gold]Block[/gold], gain [blue]{Amount}[/blue] [gold]Plating[/gold].", "Whenever you gain 8 [gold]Block[/gold], gain [blue]{Amount}[/blue] [gold]Plating[/gold].")
     };
 }
