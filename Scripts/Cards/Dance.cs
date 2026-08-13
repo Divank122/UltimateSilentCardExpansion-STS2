@@ -20,7 +20,7 @@ public class Dance : SilentCardModel, ILocalizationProvider
 
     protected override IEnumerable<DynamicVar> CanonicalVars =>
     [
-        new PowerVar<DancePower>("BlockAmount", 4m)
+        new PowerVar<DancePower>("BlockAmount", 3m)
     ];
 
     protected override IEnumerable<IHoverTip> ExtraHoverTips =>
@@ -42,7 +42,7 @@ public class Dance : SilentCardModel, ILocalizationProvider
 
     protected override void OnUpgrade()
     {
-        DynamicVars["BlockAmount"].UpgradeValueBy(2m);
+        DynamicVars["BlockAmount"].UpgradeValueBy(3m);
     }
 
     public override List<(string, string)>? Localization => LocManager.Instance.Language switch
