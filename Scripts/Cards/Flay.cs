@@ -4,7 +4,6 @@ using BaseLib.Abstracts;
 using BaseLib.Utils;
 using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Entities.Cards;
-using MegaCrit.Sts2.Core.Entities.Creatures;
 using MegaCrit.Sts2.Core.GameActions.Multiplayer;
 using MegaCrit.Sts2.Core.HoverTips;
 using MegaCrit.Sts2.Core.Localization;
@@ -26,20 +25,18 @@ public class Flay : SilentCardModel, ILocalizationProvider
 
     protected override IEnumerable<DynamicVar> CanonicalVars =>
     [
-        new PowerVar<FlayPower>(1m),
-        new DynamicVar("PoisonAmount", 4m)
+        new PowerVar<FlayPower>("FlayPower", 1m)
     ];
 
     protected override IEnumerable<IHoverTip> ExtraHoverTips =>
     [
-        HoverTipFactory.FromPower<PoisonPower>(),
         HoverTipFactory.FromPower<WeakPower>()
     ];
 
     public override List<(string, string)>? Localization => LocManager.Instance.Language switch
     {
-        "zhs" => new CardLoc("剥皮", "每当你给予敌人[gold]中毒[/gold]，额外给予{FlayPower:diff()}层[gold]虚弱[/gold]。{IfUpgraded:show:\n给予随机敌人{PoisonAmount:diff()}层[gold]中毒[/gold]。}"),
-        _ => new CardLoc("Flay", "Whenever you apply [gold]Poison[/gold] to an enemy, apply {FlayPower:diff()} [gold]Weak[/gold].{IfUpgraded:show:\nApply {PoisonAmount:diff()} [gold]Poison[/gold] to a random enemy.}")
+        "zhs" => new CardLoc("剥皮", "敌人身上每有一层[gold]虚弱[/gold]，对其攻击额外造成{FlayPower:diff()}点伤害。"),
+        _ => new CardLoc("Flay", "Deal {FlayPower:diff()} additional damage to enemies for each [gold]Weak[/gold] on them.")
     };
 
     public Flay() : base(energyCost, type, rarity, TargetType.Self)
@@ -49,19 +46,11 @@ public class Flay : SilentCardModel, ILocalizationProvider
     protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
     {
         await CreatureCmd.TriggerAnim(Owner.Creature, "Cast", Owner.Character.CastAnimDelay);
-        await PowerCmd.Apply<FlayPower>(choiceContext, Owner.Creature, DynamicVars["FlayPower"].IntValue, Owner.Creature, this);
-
-        if (IsUpgraded)
-        {
-            var randomEnemy = Owner.RunState.Rng.CombatTargets.NextItem(CombatState.HittableEnemies);
-            if (randomEnemy != null)
-            {
-                await PowerCmd.Apply<PoisonPower>(choiceContext, randomEnemy, DynamicVars["PoisonAmount"].IntValue, Owner.Creature, this);
-            }
-        }
+        await PowerCmd.Apply<FlayPower>(choiceContext, Owner.Creature, DynamicVars["FlayPower"].BaseValue, Owner.Creature, this);
     }
 
     protected override void OnUpgrade()
     {
+        EnergyCost.UpgradeBy(-1);
     }
 }

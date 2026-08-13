@@ -1,17 +1,13 @@
 using System.Collections.Generic;
-using System.Threading.Tasks;
 using BaseLib.Abstracts;
-using BaseLib.Utils;
-using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Entities.Cards;
 using MegaCrit.Sts2.Core.Entities.Creatures;
 using MegaCrit.Sts2.Core.Entities.Powers;
-using MegaCrit.Sts2.Core.GameActions.Multiplayer;
 using MegaCrit.Sts2.Core.HoverTips;
 using MegaCrit.Sts2.Core.Localization;
 using MegaCrit.Sts2.Core.Models;
-using MegaCrit.Sts2.Core.Models.Cards;
 using MegaCrit.Sts2.Core.Models.Powers;
+using MegaCrit.Sts2.Core.ValueProps;
 
 namespace USCE.Scripts.Powers;
 
@@ -22,25 +18,35 @@ public class FlayPower : CustomPowerModel
 
     protected override IEnumerable<IHoverTip> ExtraHoverTips =>
     [
-        HoverTipFactory.FromPower<PoisonPower>(),
         HoverTipFactory.FromPower<WeakPower>()
     ];
 
     public override string? CustomPackedIconPath => "res://UltimateSilentCardExpansion/images/powers/usce_flay_power.png";
     public override string? CustomBigIconPath => "res://UltimateSilentCardExpansion/images/powers/usce_flay_power.png";
 
+    public override decimal ModifyDamageAdditive(Creature? target, decimal amount, ValueProp props, Creature? dealer, CardModel? cardSource, CardPlay? cardPlay)
+    {
+        if (dealer != Owner || target == null || target.Side == Owner.Side)
+        {
+            return 0m;
+        }
+        if (!props.IsPoweredAttack())
+        {
+            return 0m;
+        }
+
+        WeakPower weak = target.GetPower<WeakPower>();
+        if (weak == null || weak.Amount <= 0)
+        {
+            return 0m;
+        }
+
+        return Amount * weak.Amount;
+    }
+
     public override List<(string, string)>? Localization => LocManager.Instance.Language switch
     {
-        "zhs" => new PowerLoc("剥皮", "每当你给予敌人中毒，额外给予1层虚弱。", "每当你给予敌人[gold]中毒[/gold]，额外给予[blue]{Amount}[/blue]层[gold]虚弱[/gold]。"),
-        _ => new PowerLoc("Flay", "Whenever you apply Poison to an enemy, apply 1 Weak.", "Whenever you apply [gold]Poison[/gold] to an enemy, apply [blue]{Amount}[/blue] [gold]Weak[/gold].")
+        "zhs" => new PowerLoc("剥皮", "敌人身上每有一层[gold]虚弱[/gold]，对其攻击额外造成[blue]{Amount}[/blue]点伤害。", "敌人身上每有一层[gold]虚弱[/gold]，对其攻击额外造成[blue]{Amount}[/blue]点伤害。"),
+        _ => new PowerLoc("Flay", "Deal [blue]{Amount}[/blue] additional damage to enemies for each [gold]Weak[/gold] on them.", "Deal [blue]{Amount}[/blue] additional damage to enemies for each [gold]Weak[/gold] on them.")
     };
-
-    public override async Task AfterPowerAmountChanged(PlayerChoiceContext choiceContext, PowerModel power, decimal amount, Creature? applier, CardModel? cardSource)
-    {
-        if (applier == Owner && amount > 0m && power is PoisonPower && power.Owner.Side != Owner.Side)
-        {
-            Flash();
-            await PowerCmd.Apply<WeakPower>(choiceContext, power.Owner, Amount, Owner, null);
-        }
-    }
 }
