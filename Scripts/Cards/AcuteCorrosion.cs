@@ -27,19 +27,21 @@ public class AcuteCorrosion : SilentCardModel, ILocalizationProvider
     protected override IEnumerable<DynamicVar> CanonicalVars =>
     [
         new DynamicVar("PoisonPower", 18m),
+        new DynamicVar("VulnerablePower", 2m),
         new DynamicVar("WeakPower", 2m)
     ];
 
     protected override IEnumerable<IHoverTip> ExtraHoverTips =>
     [
         HoverTipFactory.FromPower<PoisonPower>(),
+        HoverTipFactory.FromPower<VulnerablePower>(),
         HoverTipFactory.FromPower<WeakPower>()
     ];
 
     public override List<(string, string)>? Localization => LocManager.Instance.Language switch
     {
-        "zhs" => new CardLoc("猛蚀", "给予{PoisonPower:diff()}层[gold]中毒[/gold]和{WeakPower:diff()}层[gold]虚弱[/gold]。给予其他敌人一半效果。"),
-        _ => new CardLoc("Acute Corrosion", "Apply {PoisonPower:diff()} [gold]Poison[/gold] and {WeakPower:diff()} [gold]Weak[/gold]. Apply half to other enemies.")
+        "zhs" => new CardLoc("猛蚀", "给予{PoisonPower:diff()}层[gold]中毒[/gold]、{VulnerablePower:diff()}层[gold]易伤[/gold]和{WeakPower:diff()}层[gold]虚弱[/gold]。\n给予其他敌人一半效果。"),
+        _ => new CardLoc("Acute Corrosion", "Apply {PoisonPower:diff()} [gold]Poison[/gold], {VulnerablePower:diff()} [gold]Vulnerable[/gold], and {WeakPower:diff()} [gold]Weak[/gold].\nApply half to other enemies.")
     };
 
     public AcuteCorrosion() : base(energyCost, type, rarity, targetType)
@@ -49,10 +51,12 @@ public class AcuteCorrosion : SilentCardModel, ILocalizationProvider
     protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
     {
         int poisonAmount = DynamicVars["PoisonPower"].IntValue;
+        int vulnerableAmount = DynamicVars["VulnerablePower"].IntValue;
         int weakAmount = DynamicVars["WeakPower"].IntValue;
 
         // 主目标：完整效果
         await PowerCmd.Apply<PoisonPower>(choiceContext, cardPlay.Target!, poisonAmount, Owner.Creature, this);
+        await PowerCmd.Apply<VulnerablePower>(choiceContext, cardPlay.Target!, vulnerableAmount, Owner.Creature, this);
         await PowerCmd.Apply<WeakPower>(choiceContext, cardPlay.Target!, weakAmount, Owner.Creature, this);
 
         // 其他敌人：一半效果
@@ -61,6 +65,7 @@ public class AcuteCorrosion : SilentCardModel, ILocalizationProvider
             if (enemy != cardPlay.Target)
             {
                 await PowerCmd.Apply<PoisonPower>(choiceContext, enemy, poisonAmount / 2, Owner.Creature, this);
+                await PowerCmd.Apply<VulnerablePower>(choiceContext, enemy, vulnerableAmount / 2, Owner.Creature, this);
                 await PowerCmd.Apply<WeakPower>(choiceContext, enemy, weakAmount / 2, Owner.Creature, this);
             }
         }
