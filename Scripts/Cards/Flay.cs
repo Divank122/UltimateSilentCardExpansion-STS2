@@ -19,7 +19,7 @@ public class Flay : SilentCardModel, ILocalizationProvider
 {
     private const int energyCost = 1;
     private const CardType type = CardType.Power;
-    private const CardRarity rarity = CardRarity.Uncommon;
+    private const CardRarity rarity = CardRarity.Rare;
 
     public override TargetType TargetType => TargetType.Self;
 
@@ -35,8 +35,8 @@ public class Flay : SilentCardModel, ILocalizationProvider
 
     public override List<(string, string)>? Localization => LocManager.Instance.Language switch
     {
-        "zhs" => new CardLoc("剥皮", "敌人身上每有一层[gold]虚弱[/gold]，对其攻击额外造成{FlayPower:diff()}点伤害。"),
-        _ => new CardLoc("Flay", "Deal {FlayPower:diff()} additional damage to enemies for each [gold]Weak[/gold] on them.")
+        "zhs" => new CardLoc("剥皮", "虚弱的敌人造成的攻击伤害额外减少25%。\n敌人每回合额外失去1层虚弱。"),
+        _ => new CardLoc("Flay", "Attacks from enemies with [gold]Weak[/gold] deal 25% less damage.\nEnemies lose 1 additional [gold]Weak[/gold] each turn.")
     };
 
     public Flay() : base(energyCost, type, rarity, TargetType.Self)

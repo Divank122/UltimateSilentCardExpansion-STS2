@@ -20,6 +20,7 @@ public class Entry
         harmony.PatchAll();
         ShivCreateInHandPatches.ApplyPatches(harmony);
         DamageMultiplicativePatch.ApplyPatches(harmony);
+        FlayWeakMultiplierPatch.ApplyPatches(harmony);
         CardModelPatch.ApplyPatch(harmony);
         GD.Print("[USCE] Harmony patches applied");
 
