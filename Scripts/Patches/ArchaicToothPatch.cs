@@ -5,6 +5,7 @@ using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Entities.Players;
 using MegaCrit.Sts2.Core.Models;
 using MegaCrit.Sts2.Core.Models.Cards;
+using MegaCrit.Sts2.Core.Models.Characters;
 using MegaCrit.Sts2.Core.Models.Relics;
 using MegaCrit.Sts2.Core.Random;
 using USCE.Scripts.Cards;
@@ -18,6 +19,12 @@ public static class ArchaicToothPatch
     [HarmonyPrefix]
     public static bool GetTranscendenceStarterCardPrefix(ref CardModel? __result, Player player)
     {
+        // Let the game's and other mods' starter mappings handle other characters.
+        if (player.Character is not Silent)
+        {
+            return true;
+        }
+
         var neutralizeId = ModelDb.Card<Neutralize>().Id;
         var survivorId = ModelDb.Card<Survivor>().Id;
 

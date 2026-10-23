@@ -22,6 +22,7 @@ public class Entry
         DamageMultiplicativePatch.ApplyPatches(harmony);
         FlayWeakMultiplierPatch.ApplyPatches(harmony);
         CardModelPatch.ApplyPatch(harmony);
+        Diagnostics.LanguageDiagnostics.Install();
         GD.Print("[USCE] Harmony patches applied");
 
         ScriptManagerBridge.LookupScriptsInAssembly(typeof(Entry).Assembly);
