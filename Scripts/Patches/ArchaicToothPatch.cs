@@ -15,6 +15,20 @@ namespace USCE.Scripts.Patches;
 [HarmonyPatch(typeof(ArchaicTooth))]
 public static class ArchaicToothPatch
 {
+    [HarmonyPatch(nameof(ArchaicTooth.TranscendenceCards), MethodType.Getter)]
+    [HarmonyPostfix]
+    [HarmonyPriority(Priority.Last)]
+    public static void IncludeProspectorInTranscendenceCards(ref List<CardModel> __result)
+    {
+        // Other mods (including RitsuLib's Dusty Tome resolver) use this shared list
+        // to exclude starter-card upgrades from later Ancient rewards.
+        var prospector = ModelDb.Card<Prospector>();
+        if (!__result.Any(card => card.Id == prospector.Id))
+        {
+            __result = new List<CardModel>(__result) { prospector };
+        }
+    }
+
     [HarmonyPatch("GetTranscendenceStarterCard")]
     [HarmonyPrefix]
     public static bool GetTranscendenceStarterCardPrefix(ref CardModel? __result, Player player)
